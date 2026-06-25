@@ -158,13 +158,13 @@
   /* ============ API de GitHub ============ */
   async function gh(path, opts = {}) {
     const cfg = getCfg();
-    const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/${path}`;
+    // Sin barra final cuando path está vacío (esa barra de más hace fallar el CORS).
+    const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}` + (path ? `/${path}` : "");
     return fetch(url, {
       ...opts,
       headers: {
         "Authorization": `Bearer ${cfg.token}`,
         "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
         ...(opts.headers || {}),
       },
     });
