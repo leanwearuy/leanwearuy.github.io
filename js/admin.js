@@ -22,8 +22,9 @@
   const $ = (id) => document.getElementById(id);
 
   // Estado (declarado arriba para que esté disponible apenas se abre el panel).
-  let imgFiles = []; // {file, url}
+  let imgFiles = []; // entradas: {file, url} (nueva) o {path, url, existing:true} (ya en el repo)
   let inited = false;
+  let editCtx = null; // si estamos editando: { meta: {nombre,marca,seccion} original }
 
   /* ============ slug (igual que en el sitio) ============ */
   const slug = (t) =>
@@ -98,6 +99,7 @@
     initImagenes();
     $("publishBtn").addEventListener("click", publicar);
     $("reloadBtn").addEventListener("click", loadProductos);
+    $("cancelEdit").addEventListener("click", salirEdicion);
 
     // Si ya hay token guardado, cargar la lista al entrar.
     if ((saved.token || "").trim()) loadProductos();
@@ -216,8 +218,9 @@
   }
 
   /* ============ Construir el bloque de producto ============ */
-  function literal(p) {
-    const L = ["  {"];
+  // Cuerpo del objeto: desde "{" hasta "}" (sin la indentación inicial ni la coma final).
+  function literalBody(p) {
+    const L = ["{"];
     L.push(`    nombre: ${JSON.stringify(p.nombre)},`);
     L.push(`    marca: ${JSON.stringify(p.marca)}, categoria: ${JSON.stringify(p.categoria)}, seccion: ${JSON.stringify(p.seccion)},`);
     L.push(`    precio: ${Number(p.precio) || 0},`);
@@ -231,8 +234,23 @@
     } else L.push("    imagenes: [],");
     if (p.destacado) L.push("    destacado: true,");
     if (p.agotado) L.push("    agotado: true,");
-    L.push("  },");
+    L.push("  }");
     return L.join("\n");
+  }
+  // Para AGREGAR: con indentación inicial y coma final.
+  const literal = (p) => "  " + literalBody(p) + ",";
+
+  // Parsea un bloque {…} del archivo a objeto JS (para precargar el form al editar).
+  function parseBlock(block) {
+    try { return new Function("return (" + block + ")")(); }
+    catch (e) { return null; }
+  }
+
+  // Busca una ruta de imagen libre (no pisa fotos existentes).
+  async function freePath(base, ext) {
+    let n = 1, path;
+    do { path = `${base}-${n}.${ext}`; n++; } while (await getFile(path));
+    return path;
   }
 
   /* ============ Log ============ */
@@ -272,16 +290,17 @@
       const marcaSlug = slug(p.marca) || "productos";
       const prodSlug = slug(p.nombre) || "producto";
 
-      // 1) Subir imágenes
+      // 1) Imágenes: las existentes se conservan, las nuevas se suben.
       if (imgFiles.length) {
-        log(`Subiendo ${imgFiles.length} imagen(es)...`, "info");
+        const nuevas = imgFiles.filter((im) => !im.existing).length;
+        if (nuevas) log(`Subiendo ${nuevas} imagen(es) nueva(s)...`, "info");
         for (let i = 0; i < imgFiles.length; i++) {
-          const f = imgFiles[i].file;
+          const im = imgFiles[i];
+          if (im.existing) { p.imagenes.push(im.path); continue; }
+          const f = im.file;
           const ext = (f.name.split(".").pop() || "jpg").toLowerCase();
-          const path = `assets/${marcaSlug}/${prodSlug}-${i + 1}.${ext}`;
-          const content = await b64File(f);
-          const existing = await getFile(path);          // por si ya existe (re-publicar)
-          await putFile(path, content, `img: ${p.nombre} (${i + 1})`, existing && existing.sha);
+          const path = await freePath(`assets/${marcaSlug}/${prodSlug}`, ext);
+          await putFile(path, await b64File(f), `img: ${p.nombre}`);
           p.imagenes.push(path);
           log(`  ✓ ${path}`, "ok");
         }
@@ -289,26 +308,40 @@
         log("Sin imágenes: se usará un placeholder en el sitio.", "info");
       }
 
-      // 2) Actualizar products.js
+      // 2) Actualizar products.js (agregar o reemplazar el bloque)
       log("Actualizando products.js...", "info");
       const file = await getFile("js/products.js");
       if (!file) throw new Error("No encontré js/products.js en el repo.");
       const current = decodeText(file.content);
-      const marker = "const PRODUCTOS = [";
-      const idx = current.indexOf(marker);
-      if (idx < 0) throw new Error('No encontré "const PRODUCTOS = [" en products.js.');
-      const pos = idx + marker.length;
-      const updated = current.slice(0, pos) + "\n" + literal(p) + current.slice(pos);
-      await putFile("js/products.js", b64Text(updated), `producto: ${p.nombre}`, file.sha);
+      let updated, msg;
+
+      if (editCtx) {
+        // EDITAR: ubicar el bloque original por nombre+marca+seccion y reemplazarlo.
+        const objs = findObjects(current);
+        const o = objs.find((x) =>
+          x.meta.nombre === editCtx.meta.nombre &&
+          x.meta.marca === editCtx.meta.marca &&
+          x.meta.seccion === editCtx.meta.seccion);
+        if (!o) throw new Error("No encontré el producto a editar (¿cambió en el repo?). Tocá 'Actualizar lista' y reintentá.");
+        updated = current.slice(0, o.start) + literalBody(p) + current.slice(o.end);
+        msg = `editar: ${p.nombre}`;
+      } else {
+        // AGREGAR: insertar al inicio del array.
+        const marker = "const PRODUCTOS = [";
+        const idx = current.indexOf(marker);
+        if (idx < 0) throw new Error('No encontré "const PRODUCTOS = [" en products.js.');
+        const pos = idx + marker.length;
+        updated = current.slice(0, pos) + "\n" + literal(p) + current.slice(pos);
+        msg = `producto: ${p.nombre}`;
+      }
+
+      await putFile("js/products.js", b64Text(updated), msg, file.sha);
       log("  ✓ products.js actualizado", "ok");
 
-      log("\n✅ ¡Publicado! El sitio se actualiza en ~1 minuto.", "ok");
-      setStatus("Último producto publicado: " + p.nombre, "ok");
+      log(`\n✅ ¡${editCtx ? "Cambios guardados" : "Publicado"}! El sitio se actualiza en ~1 minuto.`, "ok");
+      setStatus((editCtx ? "Editado: " : "Publicado: ") + p.nombre, "ok");
 
-      // limpiar formulario
-      ["fNombre", "fMarca", "fPrecio", "fTalles", "fColores", "fDescripcion"].forEach((id) => $(id).value = "");
-      $("fDestacado").checked = false; $("fAgotado").checked = false;
-      imgFiles = []; renderPreviews();
+      salirEdicion();        // limpia form, imágenes y modo edición
       await loadProductos(); // refrescar la lista de abajo
     } catch (e) {
       log("\n✗ " + e.message, "bad");
@@ -346,11 +379,14 @@
   }
   function metaOf(block) {
     const g = (re) => { const m = block.match(re); return m ? m[1] : ""; };
+    const imgsTxt = (block.match(/imagenes:\s*\[([\s\S]*?)\]/) || [])[1] || "";
+    const img = (imgsTxt.match(/"([^"]+)"/) || [])[1] || "";
     return {
       nombre: g(/nombre:\s*"([^"]*)"/),
       marca: g(/marca:\s*"([^"]*)"/),
       seccion: g(/seccion:\s*"([^"]*)"/),
       precio: g(/precio:\s*([0-9]+)/),
+      img,
     };
   }
   function quitarBloque(text, obj) {
@@ -384,16 +420,70 @@
     if (!objs.length) { cont.innerHTML = `<p class="pl-empty">No hay productos cargados todavía.</p>`; return; }
     cont.innerHTML = objs.map((o, k) => {
       const m = o.meta;
+      const thumb = m.img
+        ? `<img class="pr-thumb" src="${m.img}" alt="" loading="lazy" onerror="this.classList.add('sinfoto')" />`
+        : `<span class="pr-thumb sinfoto"></span>`;
       return `<div class="prod-row">
+        ${thumb}
         <div class="pr-info">
           <b>${m.nombre || "(sin nombre)"}</b>
           <span class="pr-sub">${[m.marca, m.seccion, m.precio ? CONFIG.moneda + " " + m.precio : ""].filter(Boolean).join(" · ")}</span>
         </div>
-        <button class="pr-del" data-k="${k}">Eliminar</button>
+        <div class="pr-actions">
+          <button class="pr-edit" data-k="${k}">Editar</button>
+          <button class="pr-del" data-k="${k}">Eliminar</button>
+        </div>
       </div>`;
     }).join("");
     cont.querySelectorAll(".pr-del").forEach((b) =>
       b.addEventListener("click", () => eliminar(Number(b.dataset.k))));
+    cont.querySelectorAll(".pr-edit").forEach((b) =>
+      b.addEventListener("click", () => editar(Number(b.dataset.k))));
+  }
+
+  /* ============ Editar ============ */
+  function editar(k) {
+    const o = estadoLista.objs[k];
+    if (!o) return;
+    const data = parseBlock(estadoLista.text.slice(o.start, o.end));
+    if (!data) { alert("No pude leer este producto para editarlo."); return; }
+
+    // Precargar el formulario
+    $("fNombre").value = data.nombre || "";
+    $("fMarca").value = data.marca || "";
+    $("fSeccion").value = data.seccion || "stock";
+    // la categoría puede no estar en el select si es un slug viejo: la agrego al vuelo
+    const catSel = $("fCategoria");
+    if (data.categoria && !Array.from(catSel.options).some((op) => op.value === data.categoria))
+      catSel.insertAdjacentHTML("beforeend", `<option value="${data.categoria}">${data.categoria}</option>`);
+    catSel.value = data.categoria || catSel.value;
+    $("fPrecio").value = data.precio || "";
+    $("fTalles").value = (data.talles || []).join(", ");
+    $("fColores").value = (data.colores || []).join(", ");
+    $("fDescripcion").value = data.descripcion || "";
+    $("fDestacado").checked = !!data.destacado;
+    $("fAgotado").checked = !!data.agotado;
+
+    // Imágenes existentes (se pueden conservar, reordenar o quitar)
+    imgFiles = (data.imagenes || []).map((path) => ({ path, url: path, existing: true }));
+    renderPreviews();
+
+    editCtx = { meta: { nombre: o.meta.nombre, marca: o.meta.marca, seccion: o.meta.seccion } };
+    $("publishBtn").textContent = "Guardar cambios";
+    $("editBadge").hidden = false;
+    $("editName").textContent = data.nombre || "";
+    $("log").textContent = "";
+    $("fNombre").scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  // Vuelve al modo "agregar": limpia todo.
+  function salirEdicion() {
+    ["fNombre", "fMarca", "fPrecio", "fTalles", "fColores", "fDescripcion"].forEach((id) => $(id).value = "");
+    $("fDestacado").checked = false; $("fAgotado").checked = false;
+    imgFiles = []; renderPreviews();
+    editCtx = null;
+    $("publishBtn").textContent = "Publicar producto";
+    $("editBadge").hidden = true;
   }
   async function eliminar(k) {
     const o = estadoLista.objs[k];

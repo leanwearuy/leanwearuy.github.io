@@ -607,14 +607,25 @@ button { font-family: inherit; cursor: pointer; }
 /* Lista de productos cargados */
 .prod-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
 .pl-empty { color: var(--muted-2); font-size: .88rem; padding: 8px 0; }
-.prod-row { display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  background: var(--panel-3); border: 1px solid var(--border-2); border-radius: 10px; padding: 11px 14px; }
-.pr-info { display: flex; flex-direction: column; min-width: 0; }
+.prod-row { display: flex; align-items: center; gap: 12px;
+  background: var(--panel-3); border: 1px solid var(--border-2); border-radius: 10px; padding: 10px 12px; }
+.pr-thumb { width: 46px; height: 46px; flex: 0 0 auto; border-radius: 8px; object-fit: cover;
+  background: #fff; border: 1px solid var(--border-2); }
+.pr-thumb.sinfoto { background: var(--panel-2); display: inline-block; }
+.pr-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
 .pr-info b { font-size: .92rem; }
 .pr-sub { font-size: .78rem; color: var(--muted-2); }
-.pr-del { background: none; border: 1px solid color-mix(in srgb, #ff6b6b 45%, transparent); color: #ff8a8a;
-  font-size: .82rem; padding: 7px 14px; border-radius: 8px; cursor: pointer; flex: 0 0 auto; transition: .15s; }
+.pr-actions { display: flex; gap: 6px; flex: 0 0 auto; }
+.pr-edit, .pr-del { font-size: .82rem; padding: 7px 13px; border-radius: 8px; cursor: pointer; transition: .15s; background: none; }
+.pr-edit { border: 1px solid var(--border-2); color: var(--muted); }
+.pr-edit:hover { color: var(--text); border-color: var(--purple); }
+.pr-del { border: 1px solid color-mix(in srgb, #ff6b6b 45%, transparent); color: #ff8a8a; }
 .pr-del:hover { background: color-mix(in srgb, #ff6b6b 18%, transparent); }
+
+.edit-badge { font-size: .85rem; color: var(--purple-2); background: var(--panel-3);
+  border: 1px solid var(--border-2); border-radius: 10px; padding: 9px 13px; margin-bottom: 12px; }
+.edit-badge[hidden] { display: none; }
+.edit-badge button { background: none; border: 0; color: #ff8a8a; cursor: pointer; font-size: .85rem; text-decoration: underline; }
 
 @media (max-width: 620px) { .admin .row2, .admin .row3 { grid-template-columns: 1fr; } }
 
