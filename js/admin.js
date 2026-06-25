@@ -21,6 +21,10 @@
 
   const $ = (id) => document.getElementById(id);
 
+  // Estado (declarado arriba para que esté disponible apenas se abre el panel).
+  let imgFiles = []; // {file, url}
+  let inited = false;
+
   /* ============ slug (igual que en el sitio) ============ */
   const slug = (t) =>
     (t || "").toString().toLowerCase().normalize("NFD")
@@ -52,9 +56,6 @@
   else $("gatePass").focus();
 
   /* ============ Inicialización del panel ============ */
-  let imgFiles = []; // {file, url}
-  let inited = false;
-
   function initPanel() {
     if (inited) return;
     inited = true;

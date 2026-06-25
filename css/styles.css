@@ -535,6 +535,7 @@ button { font-family: inherit; cursor: pointer; }
 /* Pantalla de clave */
 .gate { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 22px;
   background: radial-gradient(60% 50% at 50% 0%, rgba(124,58,237,.2), transparent 60%), var(--bg); }
+.gate[hidden] { display: none; }   /* sin esto, "display:grid" le gana al atributo hidden */
 .gate-card { width: min(380px, 100%); background: var(--panel-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px 26px; text-align: center; }
 .gate-card .brand-name { font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; }
 .gate-card p { color: var(--muted); font-size: .9rem; margin: 8px 0 20px; }
