@@ -603,6 +603,18 @@ button { font-family: inherit; cursor: pointer; }
 .log .bad { color: #ff8a8a; }
 .log .info { color: var(--purple-2); }
 
+/* Lista de productos cargados */
+.prod-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+.pl-empty { color: var(--muted-2); font-size: .88rem; padding: 8px 0; }
+.prod-row { display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: var(--panel-3); border: 1px solid var(--border-2); border-radius: 10px; padding: 11px 14px; }
+.pr-info { display: flex; flex-direction: column; min-width: 0; }
+.pr-info b { font-size: .92rem; }
+.pr-sub { font-size: .78rem; color: var(--muted-2); }
+.pr-del { background: none; border: 1px solid color-mix(in srgb, #ff6b6b 45%, transparent); color: #ff8a8a;
+  font-size: .82rem; padding: 7px 14px; border-radius: 8px; cursor: pointer; flex: 0 0 auto; transition: .15s; }
+.pr-del:hover { background: color-mix(in srgb, #ff6b6b 18%, transparent); }
+
 @media (max-width: 620px) { .admin .row2, .admin .row3 { grid-template-columns: 1fr; } }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; scroll-behavior: auto; } }

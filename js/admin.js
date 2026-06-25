@@ -96,6 +96,10 @@
 
     initImagenes();
     $("publishBtn").addEventListener("click", publicar);
+    $("reloadBtn").addEventListener("click", loadProductos);
+
+    // Si ya hay token guardado, cargar la lista al entrar.
+    if ((saved.token || "").trim()) loadProductos();
   }
 
   function getCfg() {
@@ -304,10 +308,105 @@
       ["fNombre", "fMarca", "fPrecio", "fTalles", "fColores", "fDescripcion"].forEach((id) => $(id).value = "");
       $("fDestacado").checked = false; $("fAgotado").checked = false;
       imgFiles = []; renderPreviews();
+      await loadProductos(); // refrescar la lista de abajo
     } catch (e) {
       log("\n✗ " + e.message, "bad");
     } finally {
       btn.disabled = false;
+    }
+  }
+
+  /* ============ Listar / eliminar productos ============ */
+  let estadoLista = null; // { text, sha, objs:[{start,end,meta}] }
+
+  // Encuentra cada objeto {…} dentro de "const PRODUCTOS = [ … ]" (saltea strings y comentarios).
+  function findObjects(src) {
+    const marker = "const PRODUCTOS = [";
+    const mi = src.indexOf(marker);
+    if (mi < 0) return [];
+    let i = mi + marker.length;
+    let arrDepth = 1, brace = 0, objStart = -1;
+    let inStr = null, esc = false, inLine = false, inBlock = false;
+    const objs = [];
+    for (; i < src.length; i++) {
+      const c = src[i], n = src[i + 1];
+      if (inLine) { if (c === "\n") inLine = false; continue; }
+      if (inBlock) { if (c === "*" && n === "/") { inBlock = false; i++; } continue; }
+      if (inStr) { if (esc) esc = false; else if (c === "\\") esc = true; else if (c === inStr) inStr = null; continue; }
+      if (c === "/" && n === "/") { inLine = true; i++; continue; }
+      if (c === "/" && n === "*") { inBlock = true; i++; continue; }
+      if (c === '"' || c === "'" || c === "`") { inStr = c; continue; }
+      if (c === "[") { arrDepth++; continue; }
+      if (c === "]") { arrDepth--; if (arrDepth === 0 && brace === 0) break; continue; }
+      if (c === "{") { if (brace === 0) objStart = i; brace++; continue; }
+      if (c === "}") { brace--; if (brace === 0 && objStart >= 0) { objs.push({ start: objStart, end: i + 1 }); objStart = -1; } continue; }
+    }
+    return objs.map((o) => ({ ...o, meta: metaOf(src.slice(o.start, o.end)) }));
+  }
+  function metaOf(block) {
+    const g = (re) => { const m = block.match(re); return m ? m[1] : ""; };
+    return {
+      nombre: g(/nombre:\s*"([^"]*)"/),
+      marca: g(/marca:\s*"([^"]*)"/),
+      seccion: g(/seccion:\s*"([^"]*)"/),
+      precio: g(/precio:\s*([0-9]+)/),
+    };
+  }
+  function quitarBloque(text, obj) {
+    let start = obj.start, end = obj.end;
+    while (text[end] === " " || text[end] === "\t") end++;
+    if (text[end] === ",") end++;
+    while (start > 0 && (text[start - 1] === " " || text[start - 1] === "\t")) start--;
+    if (text[end] === "\n") end++;
+    return text.slice(0, start) + text.slice(end);
+  }
+
+  async function loadProductos() {
+    const cont = $("prodList");
+    const cfg = getCfg();
+    if (!cfg.owner || !cfg.repo || !cfg.token) { cont.innerHTML = `<p class="pl-empty">Configurá la conexión (paso 1) para ver la lista.</p>`; return; }
+    cont.innerHTML = `<p class="pl-empty">Cargando...</p>`;
+    try {
+      const file = await getFile("js/products.js");
+      if (!file) throw new Error("No encontré js/products.js");
+      const text = decodeText(file.content);
+      const objs = findObjects(text);
+      estadoLista = { text, sha: file.sha, objs };
+      renderLista();
+    } catch (e) {
+      cont.innerHTML = `<p class="pl-empty">No se pudo cargar: ${e.message}</p>`;
+    }
+  }
+  function renderLista() {
+    const cont = $("prodList");
+    const { objs } = estadoLista;
+    if (!objs.length) { cont.innerHTML = `<p class="pl-empty">No hay productos cargados todavía.</p>`; return; }
+    cont.innerHTML = objs.map((o, k) => {
+      const m = o.meta;
+      return `<div class="prod-row">
+        <div class="pr-info">
+          <b>${m.nombre || "(sin nombre)"}</b>
+          <span class="pr-sub">${[m.marca, m.seccion, m.precio ? CONFIG.moneda + " " + m.precio : ""].filter(Boolean).join(" · ")}</span>
+        </div>
+        <button class="pr-del" data-k="${k}">Eliminar</button>
+      </div>`;
+    }).join("");
+    cont.querySelectorAll(".pr-del").forEach((b) =>
+      b.addEventListener("click", () => eliminar(Number(b.dataset.k))));
+  }
+  async function eliminar(k) {
+    const o = estadoLista.objs[k];
+    if (!o) return;
+    if (!confirm(`¿Eliminar "${o.meta.nombre}" del catálogo?\n\n(Las fotos quedan en assets, no se borran.)`)) return;
+    $("log").textContent = "";
+    try {
+      log(`Eliminando ${o.meta.nombre}...`, "info");
+      const newText = quitarBloque(estadoLista.text, o);
+      await putFile("js/products.js", b64Text(newText), `borrar: ${o.meta.nombre}`, estadoLista.sha);
+      log("✓ Eliminado. El sitio se actualiza en ~1 minuto.", "ok");
+      await loadProductos();
+    } catch (e) {
+      log("✗ " + e.message + "\n(Si dice 409, tocá 'Actualizar lista' y reintentá.)", "bad");
     }
   }
 })();
