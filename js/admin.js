@@ -1,0 +1,313 @@
+/* ===================================================================
+   PANEL DE ADMINISTRACIÓN — LeanWear
+   Agrega productos (con imágenes) commiteando directo al repo via la
+   API de GitHub. Página estática: no hay servidor.
+
+   ⚠ SEGURIDAD: la contraseña de abajo es solo una traba liviana. Como
+   todo corre en el navegador, alguien que mire el código fuente puede
+   verla. La protección REAL es el token de GitHub: sin él no se puede
+   publicar nada. Por eso el token NO se guarda en el código, solo en
+   tu navegador (localStorage).
+   =================================================================== */
+
+(function () {
+  "use strict";
+
+  // 🔑 Cambiá esta clave por la que quieras.
+  const ADMIN_PASS = "leanwear2026";
+
+  const LS_KEY = "leanwear_admin_gh"; // dónde se guarda la config de GitHub
+  const SS_OK = "leanwear_admin_ok";  // sesión autenticada
+
+  const $ = (id) => document.getElementById(id);
+
+  /* ============ slug (igual que en el sitio) ============ */
+  const slug = (t) =>
+    (t || "").toString().toLowerCase().normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+  /* ============ Pantalla de clave ============ */
+  const gate = $("gate"), panel = $("panel");
+  function abrirPanel() {
+    gate.hidden = true;
+    panel.hidden = false;
+    initPanel();
+  }
+  function intentarEntrar() {
+    if ($("gatePass").value === ADMIN_PASS) {
+      sessionStorage.setItem(SS_OK, "1");
+      abrirPanel();
+    } else {
+      $("gateErr").textContent = "Clave incorrecta.";
+    }
+  }
+  $("gateBtn").addEventListener("click", intentarEntrar);
+  $("gatePass").addEventListener("keydown", (e) => { if (e.key === "Enter") intentarEntrar(); });
+  $("logoutBtn") && $("logoutBtn").addEventListener("click", () => {
+    sessionStorage.removeItem(SS_OK);
+    location.reload();
+  });
+  if (sessionStorage.getItem(SS_OK) === "1") abrirPanel();
+  else $("gatePass").focus();
+
+  /* ============ Inicialización del panel ============ */
+  let imgFiles = []; // {file, url}
+  let inited = false;
+
+  function initPanel() {
+    if (inited) return;
+    inited = true;
+
+    // Categorías desde config.js (evita errores de slug)
+    const sel = $("fCategoria");
+    const cats = (typeof CATEGORIAS !== "undefined") ? CATEGORIAS : {};
+    sel.innerHTML = Object.entries(cats)
+      .map(([slugCat, info]) => `<option value="${slugCat}">${info.label}</option>`)
+      .join("") || `<option value="otros">Otros</option>`;
+
+    // Config GitHub guardada + valores por defecto de este proyecto.
+    const saved = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
+    let owner = saved.owner || "leanwear-uy";
+    let repo = saved.repo || "leanwear-uy.github.io";
+    let branch = saved.branch || "main";
+    // Si en el futuro cambia el repo, intenta deducirlo de la URL al vuelo.
+    if (!saved.owner && location.hostname.endsWith("github.io")) {
+      owner = location.hostname.split(".")[0];
+      const seg = location.pathname.split("/").filter(Boolean);
+      // Sitio de usuario (raíz) -> repo = hostname; sitio de proyecto -> 1er segmento (carpeta, sin punto).
+      repo = (seg[0] && !seg[0].includes(".")) ? seg[0] : location.hostname;
+    }
+    $("ghOwner").value = owner;
+    $("ghRepo").value = repo;
+    $("ghBranch").value = branch;
+    $("ghToken").value = saved.token || "";
+
+    ["ghOwner", "ghRepo", "ghBranch", "ghToken"].forEach((id) =>
+      $(id).addEventListener("change", guardarConfig)
+    );
+
+    $("testBtn").addEventListener("click", probarConexion);
+    $("forgetBtn").addEventListener("click", () => {
+      localStorage.removeItem(LS_KEY);
+      $("ghToken").value = "";
+      setStatus("Token borrado de este navegador.", "");
+    });
+
+    initImagenes();
+    $("publishBtn").addEventListener("click", publicar);
+  }
+
+  function getCfg() {
+    return {
+      owner: $("ghOwner").value.trim(),
+      repo: $("ghRepo").value.trim(),
+      branch: $("ghBranch").value.trim() || "main",
+      token: $("ghToken").value.trim(),
+    };
+  }
+  function guardarConfig() {
+    localStorage.setItem(LS_KEY, JSON.stringify(getCfg()));
+  }
+  function setStatus(msg, cls) {
+    const el = $("connStatus");
+    el.textContent = msg;
+    el.className = "conn-status " + (cls || "");
+  }
+
+  /* ============ Imágenes ============ */
+  function initImagenes() {
+    const drop = $("imgDrop"), input = $("imgInput");
+    drop.addEventListener("click", () => input.click());
+    input.addEventListener("change", () => { addFiles(input.files); input.value = ""; });
+    ["dragenter", "dragover"].forEach((ev) =>
+      drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+    ["dragleave", "drop"].forEach((ev) =>
+      drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
+    drop.addEventListener("drop", (e) => addFiles(e.dataTransfer.files));
+  }
+  function addFiles(fileList) {
+    Array.from(fileList).filter((f) => f.type.startsWith("image/")).forEach((f) =>
+      imgFiles.push({ file: f, url: URL.createObjectURL(f) }));
+    renderPreviews();
+  }
+  function renderPreviews() {
+    $("imgPreviews").innerHTML = imgFiles.map((im, i) => `
+      <div class="img-thumb">
+        ${i === 0 ? `<span class="main-tag">Principal</span>` : ""}
+        <img src="${im.url}" alt="foto ${i + 1}" />
+        <div class="img-actions">
+          ${i !== 0 ? `<button data-act="main" data-i="${i}">★</button>` : ""}
+          <button data-act="del" data-i="${i}">✕</button>
+        </div>
+      </div>`).join("");
+    $("imgPreviews").querySelectorAll("button").forEach((b) =>
+      b.addEventListener("click", () => {
+        const i = Number(b.dataset.i);
+        if (b.dataset.act === "del") imgFiles.splice(i, 1);
+        else { const [it] = imgFiles.splice(i, 1); imgFiles.unshift(it); }
+        renderPreviews();
+      }));
+  }
+
+  /* ============ API de GitHub ============ */
+  async function gh(path, opts = {}) {
+    const cfg = getCfg();
+    const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/${path}`;
+    return fetch(url, {
+      ...opts,
+      headers: {
+        "Authorization": `Bearer ${cfg.token}`,
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        ...(opts.headers || {}),
+      },
+    });
+  }
+  const encPath = (p) => p.split("/").map(encodeURIComponent).join("/");
+
+  async function getFile(path) {
+    const cfg = getCfg();
+    const res = await gh(`contents/${encPath(path)}?ref=${encodeURIComponent(cfg.branch)}`);
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(`No pude leer ${path}: ${res.status} ${await res.text()}`);
+    return res.json();
+  }
+  async function putFile(path, base64, message, sha) {
+    const cfg = getCfg();
+    const body = { message, content: base64, branch: cfg.branch };
+    if (sha) body.sha = sha;
+    const res = await gh(`contents/${encPath(path)}`, { method: "PUT", body: JSON.stringify(body) });
+    if (!res.ok) throw new Error(`Error subiendo ${path}: ${res.status} ${await res.text()}`);
+    return res.json();
+  }
+
+  async function probarConexion() {
+    guardarConfig();
+    const cfg = getCfg();
+    if (!cfg.owner || !cfg.repo || !cfg.token) return setStatus("Completá usuario, repo y token.", "bad");
+    setStatus("Probando...", "");
+    try {
+      const res = await gh("");
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      const j = await res.json();
+      const perm = j.permissions && j.permissions.push;
+      setStatus(`✓ Conectado a ${j.full_name}` + (perm ? " (con permiso de escritura)" : " — ⚠ el token no tiene permiso de escritura"), perm ? "ok" : "bad");
+    } catch (e) {
+      setStatus("✗ No se pudo conectar. Revisá usuario/repo/token. " + e.message, "bad");
+    }
+  }
+
+  /* ============ Helpers base64 ============ */
+  const b64Text = (str) => btoa(unescape(encodeURIComponent(str)));
+  const decodeText = (b64) => decodeURIComponent(escape(atob(b64.replace(/\n/g, ""))));
+  function b64File(file) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => { const s = r.result.split(",")[1]; resolve(s); };
+      r.onerror = reject;
+      r.readAsDataURL(file);
+    });
+  }
+
+  /* ============ Construir el bloque de producto ============ */
+  function literal(p) {
+    const L = ["  {"];
+    L.push(`    nombre: ${JSON.stringify(p.nombre)},`);
+    L.push(`    marca: ${JSON.stringify(p.marca)}, categoria: ${JSON.stringify(p.categoria)}, seccion: ${JSON.stringify(p.seccion)},`);
+    L.push(`    precio: ${Number(p.precio) || 0},`);
+    if (p.descripcion) L.push(`    descripcion: ${JSON.stringify(p.descripcion)},`);
+    L.push(`    talles: ${JSON.stringify(p.talles)},`);
+    if (p.colores.length) L.push(`    colores: ${JSON.stringify(p.colores)},`);
+    if (p.imagenes.length) {
+      L.push("    imagenes: [");
+      p.imagenes.forEach((s) => L.push(`      ${JSON.stringify(s)},`));
+      L.push("    ],");
+    } else L.push("    imagenes: [],");
+    if (p.destacado) L.push("    destacado: true,");
+    if (p.agotado) L.push("    agotado: true,");
+    L.push("  },");
+    return L.join("\n");
+  }
+
+  /* ============ Log ============ */
+  function log(msg, cls) {
+    const el = $("log");
+    el.innerHTML += `<span class="${cls || ""}">${msg}</span>\n`;
+    el.scrollTop = el.scrollHeight;
+  }
+
+  /* ============ Publicar ============ */
+  async function publicar() {
+    guardarConfig();
+    const cfg = getCfg();
+    const p = {
+      nombre: $("fNombre").value.trim(),
+      marca: $("fMarca").value.trim(),
+      categoria: $("fCategoria").value,
+      seccion: $("fSeccion").value,
+      precio: $("fPrecio").value,
+      talles: $("fTalles").value.split(",").map((s) => s.trim()).filter(Boolean),
+      colores: $("fColores").value.split(",").map((s) => s.trim()).filter(Boolean),
+      descripcion: $("fDescripcion").value.trim(),
+      destacado: $("fDestacado").checked,
+      agotado: $("fAgotado").checked,
+      imagenes: [],
+    };
+
+    // Validaciones
+    if (!cfg.owner || !cfg.repo || !cfg.token) return setStatus("Configurá la conexión con GitHub (paso 1).", "bad");
+    if (!p.nombre || !p.marca || !p.categoria) { $("log").textContent = ""; return log("✗ Faltan campos obligatorios (nombre, marca, categoría).", "bad"); }
+
+    const btn = $("publishBtn");
+    btn.disabled = true;
+    $("log").textContent = "";
+
+    try {
+      const marcaSlug = slug(p.marca) || "productos";
+      const prodSlug = slug(p.nombre) || "producto";
+
+      // 1) Subir imágenes
+      if (imgFiles.length) {
+        log(`Subiendo ${imgFiles.length} imagen(es)...`, "info");
+        for (let i = 0; i < imgFiles.length; i++) {
+          const f = imgFiles[i].file;
+          const ext = (f.name.split(".").pop() || "jpg").toLowerCase();
+          const path = `assets/${marcaSlug}/${prodSlug}-${i + 1}.${ext}`;
+          const content = await b64File(f);
+          const existing = await getFile(path);          // por si ya existe (re-publicar)
+          await putFile(path, content, `img: ${p.nombre} (${i + 1})`, existing && existing.sha);
+          p.imagenes.push(path);
+          log(`  ✓ ${path}`, "ok");
+        }
+      } else {
+        log("Sin imágenes: se usará un placeholder en el sitio.", "info");
+      }
+
+      // 2) Actualizar products.js
+      log("Actualizando products.js...", "info");
+      const file = await getFile("js/products.js");
+      if (!file) throw new Error("No encontré js/products.js en el repo.");
+      const current = decodeText(file.content);
+      const marker = "const PRODUCTOS = [";
+      const idx = current.indexOf(marker);
+      if (idx < 0) throw new Error('No encontré "const PRODUCTOS = [" en products.js.');
+      const pos = idx + marker.length;
+      const updated = current.slice(0, pos) + "\n" + literal(p) + current.slice(pos);
+      await putFile("js/products.js", b64Text(updated), `producto: ${p.nombre}`, file.sha);
+      log("  ✓ products.js actualizado", "ok");
+
+      log("\n✅ ¡Publicado! El sitio se actualiza en ~1 minuto.", "ok");
+      setStatus("Último producto publicado: " + p.nombre, "ok");
+
+      // limpiar formulario
+      ["fNombre", "fMarca", "fPrecio", "fTalles", "fColores", "fDescripcion"].forEach((id) => $(id).value = "");
+      $("fDestacado").checked = false; $("fAgotado").checked = false;
+      imgFiles = []; renderPreviews();
+    } catch (e) {
+      log("\n✗ " + e.message, "bad");
+    } finally {
+      btn.disabled = false;
+    }
+  }
+})();

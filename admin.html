@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Panel · LeanWear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="admin-body admin">
+
+  <!-- ===== Pantalla de clave ===== -->
+  <div class="gate" id="gate">
+    <div class="gate-card">
+      <span class="brand-name">Lean<b style="background:var(--grad-logo);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Wear</b></span>
+      <p>Panel privado. Ingresá la clave para continuar.</p>
+      <input type="password" id="gatePass" placeholder="Contraseña" autocomplete="off" />
+      <div class="gate-err" id="gateErr"></div>
+      <button class="btn-admin" id="gateBtn" style="width:100%;margin-top:14px;">Entrar</button>
+    </div>
+  </div>
+
+  <!-- ===== Panel (oculto hasta autenticar) ===== -->
+  <div id="panel" hidden>
+    <div class="admin-top">
+      <div>
+        <span class="brand-name">Lean<b style="color:var(--purple-2);">Wear</b></span>
+        <span class="tag">Panel de productos</span>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <a class="admin-logout" href="index.html" target="_blank" rel="noopener">Ver sitio ↗</a>
+        <button class="admin-logout" id="logoutBtn">Salir</button>
+      </div>
+    </div>
+
+    <div class="admin-wrap">
+      <div class="admin-grid">
+
+        <!-- 1. Conexión GitHub -->
+        <div class="panel-card">
+          <h2><span class="step">1.</span> Conexión con GitHub</h2>
+          <p class="hint">Necesario para publicar. El token queda guardado solo en este navegador.</p>
+          <div class="row3">
+            <div class="field"><label>Usuario / organización</label><input id="ghOwner" placeholder="tu-usuario" /></div>
+            <div class="field"><label>Repositorio</label><input id="ghRepo" placeholder="leanwear" /></div>
+            <div class="field"><label>Rama</label><input id="ghBranch" placeholder="main" /></div>
+          </div>
+          <div class="field">
+            <label>Token de acceso (fine-grained, permiso "Contents: Read and write")</label>
+            <input id="ghToken" type="password" placeholder="github_pat_..." autocomplete="off" />
+            <div class="sub">Creá uno en GitHub → Settings → Developer settings → Fine-grained tokens, dándole acceso solo a este repositorio.</div>
+          </div>
+          <div class="pub-bar">
+            <button class="btn-ghost2" id="testBtn">Probar conexión</button>
+            <button class="btn-danger" id="forgetBtn">Borrar token de este navegador</button>
+          </div>
+          <div class="conn-status" id="connStatus"></div>
+        </div>
+
+        <!-- 2. Nuevo producto -->
+        <div class="panel-card">
+          <h2><span class="step">2.</span> Nuevo producto</h2>
+          <p class="hint">Completá los datos. Los campos con * son obligatorios.</p>
+
+          <div class="field"><label>Nombre *</label><input id="fNombre" placeholder="Buzo Oversize Essential" /></div>
+
+          <div class="row3">
+            <div class="field"><label>Marca *</label><input id="fMarca" placeholder="Nike" /></div>
+            <div class="field"><label>Categoría *</label><select id="fCategoria"></select></div>
+            <div class="field"><label>Sección *</label>
+              <select id="fSeccion">
+                <option value="stock">Stock (disponible)</option>
+                <option value="encargues">Encargues (a pedido)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row2">
+            <div class="field"><label>Precio</label><input id="fPrecio" type="number" min="0" placeholder="38000" /></div>
+            <div class="field"><label>Talles (separados por coma)</label><input id="fTalles" placeholder="S, M, L, XL" /></div>
+          </div>
+
+          <div class="field"><label>Colores (separados por coma)</label><input id="fColores" placeholder="Negro, Gris, Violeta" /></div>
+
+          <div class="field"><label>Descripción</label><textarea id="fDescripcion" placeholder="Algodón frisado, corte oversize..."></textarea></div>
+
+          <div class="row2">
+            <div class="field check"><input type="checkbox" id="fDestacado" /><label for="fDestacado" style="margin:0;">Destacado ★</label></div>
+            <div class="field check"><input type="checkbox" id="fAgotado" /><label for="fAgotado" style="margin:0;">Agotado</label></div>
+          </div>
+        </div>
+
+        <!-- 3. Imágenes -->
+        <div class="panel-card">
+          <h2><span class="step">3.</span> Fotos</h2>
+          <p class="hint">Subí una o varias. La primera es la principal. Se guardan en <code>assets/&lt;marca&gt;/</code>.</p>
+          <div class="img-drop" id="imgDrop">
+            Arrastrá las fotos acá o <b>hacé click para elegir</b>
+            <input type="file" id="imgInput" accept="image/*" multiple hidden />
+          </div>
+          <div class="img-previews" id="imgPreviews"></div>
+        </div>
+
+        <!-- 4. Publicar -->
+        <div class="panel-card">
+          <h2><span class="step">4.</span> Publicar</h2>
+          <p class="hint">Sube las imágenes y agrega el producto al catálogo con un commit. El sitio se actualiza en ~1 minuto.</p>
+          <button class="btn-admin" id="publishBtn">Publicar producto</button>
+          <div class="log" id="log"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

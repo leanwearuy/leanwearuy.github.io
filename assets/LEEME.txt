@@ -1,0 +1,12 @@
+Poné acá las fotos de tus prendas (jpg, png o webp).
+
+Recomendaciones:
+- Proporción vertical 3:4 (ej: 600x800 px) para que queden parejas.
+- Pesá las imágenes (usá TinyPNG / Squoosh) para que el sitio cargue rápido.
+- Nombrá los archivos sin espacios ni acentos: buzo-essential-1.jpg
+
+Después referencialas en js/products.js dentro de "imagenes", por ejemplo:
+  imagenes: ["assets/buzo-essential-1.jpg", "assets/buzo-essential-2.jpg"]
+
+Si todavía no tenés la foto, dejá la lista vacía [] y se muestra
+un placeholder con degradé automáticamente.

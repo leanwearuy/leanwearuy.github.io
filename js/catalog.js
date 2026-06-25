@@ -1,0 +1,242 @@
+/* ===================================================================
+   CATÁLOGO — Construye la barra de categorías, el sidebar de filtros,
+   la grilla de productos. Las tarjetas linkean a producto.html. Lee la sección desde
+   <div class="catalog" data-seccion="stock|encargues">.
+   No hace falta tocar este archivo.
+   =================================================================== */
+
+(function () {
+  "use strict";
+
+  const root = document.querySelector(".catalog");
+  if (!root) return;
+
+  const seccion = root.dataset.seccion;
+  const ITEMS = PRODUCTOS.filter((p) => p.seccion === seccion);
+
+  /* ---------- Helpers ---------- */
+  const cap = (s) => (s || "").charAt(0).toUpperCase() + (s || "").slice(1);
+  const catLabel = (slug) => (CATEGORIAS[slug] && CATEGORIAS[slug].label) || cap(slug);
+  const catGrupo = (slug) => (CATEGORIAS[slug] && CATEGORIAS[slug].grupo) || "Otros";
+  const precioFmt = (n) =>
+    typeof n === "number" ? `${CONFIG.moneda} ${n.toLocaleString("es-AR")}` : "Consultar";
+
+  function placeholder(nombre) {
+    const ini = (nombre || "LW").trim().slice(0, 16);
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'>
+      <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+        <stop offset='0' stop-color='#2a1a4d'/><stop offset='1' stop-color='#0d0a18'/>
+      </linearGradient></defs>
+      <rect width='600' height='600' fill='url(#g)'/>
+      <text x='50%' y='45%' fill='#8b5cf6' font-family='Sora,Arial' font-size='52' font-weight='700' text-anchor='middle'>◆</text>
+      <text x='50%' y='56%' fill='#a79fc4' font-family='Inter,Arial' font-size='26' text-anchor='middle'>${ini}</text>
+    </svg>`;
+    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+  }
+  const imgSrc = (p, i = 0) => (p.imagenes && p.imagenes[i]) || placeholder(p.nombre);
+  const onErr = (p) => `this.onerror=null;this.src='${placeholder(p.nombre)}'`;
+
+  /* ---------- Estado ---------- */
+  const state = { categoria: "all", marca: "all", q: "", sort: "reco", tab: "cat" };
+  // categoría inicial desde la URL (?cat=zapatos)
+  const urlCat = new URLSearchParams(location.search).get("cat");
+  if (urlCat) state.categoria = urlCat;
+
+  const categoriasPresentes = [...new Set(ITEMS.map((p) => p.categoria))];
+  const marcasPresentes = [...new Set(ITEMS.map((p) => p.marca))].sort();
+
+  /* ---------- Shell HTML ---------- */
+  root.innerHTML = `
+    <div class="cat-bar">
+      <div class="container cat-bar-inner" id="catBar"></div>
+    </div>
+    <div class="container catalog-shell">
+      <div class="catalog-grid">
+        <aside class="sidebar">
+          <div class="sb-tabs">
+            <button class="sb-tab active" data-tab="cat">Categorías</button>
+            <button class="sb-tab" data-tab="marca">Marcas</button>
+          </div>
+          <div class="sb-meta">
+            <span class="sb-count" id="sbCount"></span>
+            <div class="sb-sort">
+              <label for="sortSel">Ordenar por</label>
+              <select id="sortSel">
+                ${ORDENES.map((o) => `<option value="${o.id}">${o.label}</option>`).join("")}
+              </select>
+            </div>
+          </div>
+          <div class="sb-panel" id="panelCat"></div>
+          <div class="sb-panel" id="panelMarca" hidden></div>
+        </aside>
+
+        <section class="content">
+          <div class="toolbar">
+            <div class="active-filters" id="activeFilters"></div>
+          </div>
+          <div class="grid" id="grid"></div>
+          <p class="empty-state" id="empty" hidden>No hay productos que coincidan con el filtro.</p>
+        </section>
+      </div>
+    </div>`;
+
+  const $ = (s) => root.querySelector(s);
+  const $$ = (s) => Array.from(root.querySelectorAll(s));
+
+  /* ---------- Barra de categorías (top) ---------- */
+  function buildCatBar() {
+    const bar = $("#catBar");
+    const tabs = [["all", "All"], ...categoriasPresentes.map((c) => [c, catLabel(c)])];
+    bar.innerHTML = tabs
+      .map(([id, label]) => `<button class="cat-tab" data-cat="${id}">${label}</button>`)
+      .join("");
+    bar.addEventListener("click", (e) => {
+      const b = e.target.closest(".cat-tab");
+      if (!b) return;
+      state.categoria = b.dataset.cat;
+      render();
+    });
+  }
+
+  /* ---------- Sidebar: categorías agrupadas ---------- */
+  function buildPanelCat() {
+    const panel = $("#panelCat");
+    const grupos = {};
+    categoriasPresentes.forEach((c) => {
+      const g = catGrupo(c);
+      (grupos[g] = grupos[g] || []).push(c);
+    });
+    const ordenGrupos = GRUPOS_ORDEN.filter((g) => grupos[g]);
+
+    let html = `<button class="sb-all" data-cat="all">Todos los productos</button>`;
+    ordenGrupos.forEach((g) => {
+      const items = grupos[g]
+        .map((c) => {
+          const qty = ITEMS.filter((p) => p.categoria === c).length;
+          return `<button class="sb-item" data-cat="${c}">${catLabel(c)}<span class="qty">${qty}</span></button>`;
+        })
+        .join("");
+      html += `
+        <div class="sb-group" data-group="${g}">
+          <button class="sb-group-head">${g}<span class="chev">▾</span></button>
+          <div class="sb-items">${items}</div>
+        </div>`;
+    });
+    panel.innerHTML = html;
+
+    panel.addEventListener("click", (e) => {
+      const head = e.target.closest(".sb-group-head");
+      if (head) { head.parentElement.classList.toggle("collapsed"); return; }
+      const item = e.target.closest("[data-cat]");
+      if (item) { state.categoria = item.dataset.cat; render(); }
+    });
+  }
+
+  /* ---------- Sidebar: marcas ---------- */
+  function buildPanelMarca() {
+    const panel = $("#panelMarca");
+    let html = `<button class="sb-all" data-marca="all">Todas las marcas</button><div class="sb-items">`;
+    html += marcasPresentes
+      .map((m) => {
+        const qty = ITEMS.filter((p) => p.marca === m).length;
+        return `<button class="sb-item" data-marca="${m}">${m}<span class="qty">${qty}</span></button>`;
+      })
+      .join("");
+    html += `</div>`;
+    panel.innerHTML = html;
+    panel.addEventListener("click", (e) => {
+      const item = e.target.closest("[data-marca]");
+      if (item) { state.marca = item.dataset.marca; render(); }
+    });
+  }
+
+  /* ---------- Tabs del sidebar ---------- */
+  function bindTabs() {
+    $$(".sb-tab").forEach((t) =>
+      t.addEventListener("click", () => {
+        state.tab = t.dataset.tab;
+        $$(".sb-tab").forEach((x) => x.classList.toggle("active", x === t));
+        $("#panelCat").hidden = state.tab !== "cat";
+        $("#panelMarca").hidden = state.tab !== "marca";
+      })
+    );
+    $("#sortSel").addEventListener("change", (e) => { state.sort = e.target.value; render(); });
+  }
+
+  /* ---------- Filtrado + orden ---------- */
+  function filtrar() {
+    const q = state.q.trim().toLowerCase();
+    let list = ITEMS.filter((p) => {
+      if (state.categoria !== "all" && p.categoria !== state.categoria) return false;
+      if (state.marca !== "all" && p.marca !== state.marca) return false;
+      if (q && !(`${p.nombre} ${p.marca} ${catLabel(p.categoria)}`.toLowerCase().includes(q))) return false;
+      return true;
+    });
+    if (state.sort === "precio-asc") list.sort((a, b) => (a.precio || 0) - (b.precio || 0));
+    else if (state.sort === "precio-desc") list.sort((a, b) => (b.precio || 0) - (a.precio || 0));
+    else if (state.sort === "nombre") list.sort((a, b) => a.nombre.localeCompare(b.nombre));
+    return list;
+  }
+
+  /* ---------- Chips de filtros activos ---------- */
+  function buildActiveFilters() {
+    const cont = $("#activeFilters");
+    const chips = [];
+    if (state.categoria !== "all")
+      chips.push(`<span class="af-chip">${catLabel(state.categoria)}<button data-clear="categoria">✕</button></span>`);
+    if (state.marca !== "all")
+      chips.push(`<span class="af-chip">${state.marca}<button data-clear="marca">✕</button></span>`);
+    if (state.q.trim())
+      chips.push(`<span class="af-chip">“${state.q.trim()}”<button data-clear="q">✕</button></span>`);
+
+    cont.innerHTML =
+      `<span class="af-label">Filtros activos:</span>` +
+      (chips.length ? chips.join("") : `<span class="af-label">ninguno</span>`) +
+      (chips.length ? `<button class="af-clear" data-clear="all">Limpiar todo</button>` : ``);
+
+    cont.querySelectorAll("[data-clear]").forEach((b) =>
+      b.addEventListener("click", () => {
+        const k = b.dataset.clear;
+        if (k === "all") { state.categoria = "all"; state.marca = "all"; state.q = ""; document.querySelector("#searchInput").value = ""; document.querySelector("#searchClear").classList.remove("show"); }
+        else if (k === "q") { state.q = ""; document.querySelector("#searchInput").value = ""; document.querySelector("#searchClear").classList.remove("show"); }
+        else state[k] = "all";
+        render();
+      })
+    );
+  }
+
+  /* ---------- Render principal ---------- */
+  function render() {
+    const list = filtrar();
+
+    // estados activos
+    $$("[data-cat]").forEach((b) => b.classList.toggle("active", b.dataset.cat === state.categoria));
+    $$("[data-marca]").forEach((b) => b.classList.toggle("active", b.dataset.marca === state.marca));
+    $("#sbCount").textContent = `${list.length} resultado${list.length === 1 ? "" : "s"} encontrado${list.length === 1 ? "" : "s"}`;
+
+    buildActiveFilters();
+
+    const grid = $("#grid");
+    const empty = $("#empty");
+    empty.hidden = list.length > 0;
+
+    grid.innerHTML = list
+      .map((p, i) =>
+        LeanWear.cardHTML(p).replace(
+          '<a class="card"',
+          `<a class="card" style="animation-delay:${Math.min(i * 35, 400)}ms"`
+        )
+      )
+      .join("");
+  }
+
+  /* ---------- Búsqueda desde el header ---------- */
+  document.addEventListener("lean:search", (e) => { state.q = e.detail || ""; render(); });
+
+  /* ---------- Init ---------- */
+  buildCatBar();
+  buildPanelCat();
+  buildPanelMarca();
+  bindTabs();
+  render();
+})();
