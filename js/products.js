@@ -35,15 +35,4 @@ const PRODUCTOS = [
     ],
     destacado: true,
   },
-  {
-    nombre: "Conjunto Nike Tech",
-    marca: "Nike", categoria: "Conjuntos", seccion: "encargues",
-    precio: 0,
-    talles: ["S", "M", "L", "XL"], colores: ["Negro", "Rojo"],
-    imagenes: [
-      "assets/Essentials/essentialsbuzo1.webp",
-      "assets/Essentials/essentialsbuzo2.webp",
-    ],
-    destacado: true,
-  },
 ];
