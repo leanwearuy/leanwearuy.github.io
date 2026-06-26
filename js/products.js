@@ -34,6 +34,8 @@ const PRODUCTOS = [
       "assets/nike/conjunto-nike-tech-modelo-viejo-2.avif",
       "assets/nike/conjunto-nike-tech-modelo-viejo-3.avif",
       "assets/nike/conjunto-nike-tech-modelo-viejo-4.avif",
+      "assets/nike/conjunto-nike-tech-modelo-viejo-1.jpeg",
+      "assets/nike/conjunto-nike-tech-modelo-viejo-2.jpeg",
     ],
   },
   /* ============================ STOCK ============================ */
