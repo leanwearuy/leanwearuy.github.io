@@ -23,6 +23,19 @@
    =================================================================== */
 
 const PRODUCTOS = [
+  {
+    nombre: "Conjunto Nike Tech ( Modelo Viejo )",
+    marca: "Nike", categoria: "conjuntos", seccion: "encargues",
+    precio: 0,
+    talles: ["S","M","L","XL"],
+    colores: ["Negro","Gris","Negro y Gris","Rojo"],
+    imagenes: [
+      "assets/nike/conjunto-nike-tech-modelo-viejo-1.avif",
+      "assets/nike/conjunto-nike-tech-modelo-viejo-2.avif",
+      "assets/nike/conjunto-nike-tech-modelo-viejo-3.avif",
+      "assets/nike/conjunto-nike-tech-modelo-viejo-4.avif",
+    ],
+  },
   /* ============================ STOCK ============================ */
   {
     nombre: "Buzo Essentials",
