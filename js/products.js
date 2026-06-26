@@ -24,15 +24,4 @@
 
 const PRODUCTOS = [
   /* ============================ STOCK ============================ */
-  {
-    nombre: "Buzo Essentials",
-    marca: "Essentials", categoria: "buzos", seccion: "encargues",
-    precio: 0,
-    talles: ["S", "M", "L", "XL"], colores: ["Negro", "Gris"],
-    imagenes: [
-      "assets/Essentials/essentialsbuzo1.webp",
-      "assets/Essentials/essentialsbuzo2.webp",
-    ],
-    destacado: true,
-  },
 ];
