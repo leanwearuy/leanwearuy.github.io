@@ -23,5 +23,26 @@
    =================================================================== */
 
 const PRODUCTOS = [
+  {
+    nombre: "Conjuntos Nike Tech ( Modelo Viejo )",
+    marca: "Nike", categoria: "conjuntos", seccion: "encargues",
+    precio: 0,
+    talles: ["S","M","L","XL"],
+    colores: ["Negro","Gris","Azul","Rojo","Blanco","Blanco y Negro","Gris y Negro"],
+    imagenes: [
+      "assets/nike/conjuntos-nike-tech-modelo-viejo-3.jpeg",
+      "assets/nike/conjuntos-nike-tech-modelo-viejo-4.jpeg",
+      "assets/nike/conjuntos-nike-tech-modelo-viejo-5.jpeg",
+      "assets/nike/conjuntos-nike-tech-modelo-viejo-6.jpeg",
+      "assets/nike/conjuntos-nike-tech-modelo-viejo-7.jpeg",
+      "assets/nike/conjuntos-nike-tech-modelo-viejo-8.jpeg",
+      "assets/nike/conjuntos-nike-tech-modelo-viejo-9.jpeg",
+      "assets/nike/conjuntos-nike-tech-modelo-viejo-10.jpeg",
+      "assets/nike/conjuntos-nike-tech-modelo-viejo-11.jpeg",
+      "assets/nike/conjuntos-nike-tech-modelo-viejo-1.jpg",
+      "assets/nike/conjuntos-nike-tech-modelo-viejo-2.jpg",
+      "assets/nike/conjuntos-nike-tech-modelo-viejo-3.jpg",
+    ],
+  },
   /* ============================ STOCK ============================ */
 ];
