@@ -42,10 +42,10 @@
       </form>
 
       <nav class="header-nav" id="headerNav">
-        <a href="index.html" data-page="stock" class="${page === "stock" ? "active" : ""}">
+        <a href="stock.html" data-page="stock" class="nav-stock ${page === "stock" ? "active" : ""}">
           ${ICON.stock}<span class="nav-text">Stock</span>
         </a>
-        <a href="encargues.html" data-page="encargues" class="${page === "encargues" ? "active" : ""}">
+        <a href="index.html" data-page="encargues" class="${page === "encargues" ? "active" : ""}">
           ${ICON.encargues}<span class="nav-text">Encargues</span>
         </a>
         <a href="contacto.html" data-page="contacto" class="${page === "contacto" ? "active" : ""}">
@@ -95,8 +95,8 @@
       <div class="footer-col">
         <h4>Explorar</h4>
         <ul>
-          <li><a href="index.html">Stock disponible</a></li>
-          <li><a href="encargues.html">Encargues</a></li>
+          <li><a href="index.html">Encargues</a></li>
+          <li><a href="stock.html">Stock disponible</a></li>
           <li><a href="contacto.html">Contacto</a></li>
         </ul>
       </div>

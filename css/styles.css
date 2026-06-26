@@ -126,6 +126,8 @@ button { font-family: inherit; cursor: pointer; }
 }
 .header-nav a:hover { color: var(--text); background: var(--panel-3); }
 .header-nav a.active { color: var(--text); background: var(--panel-3); }
+.header-nav a.nav-stock { color: #34d399; }                 /* "Stock" en verde */
+.header-nav a.nav-stock:hover, .header-nav a.nav-stock.active { color: #34d399; background: var(--panel-3); }
 .header-nav a.active::after {
   content: ""; }
 .account {

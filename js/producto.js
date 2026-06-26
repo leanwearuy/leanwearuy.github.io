@@ -23,7 +23,7 @@
     return;
   }
 
-  const seccionPagina = p.seccion === "encargues" ? "encargues.html" : "index.html";
+  const seccionPagina = p.seccion === "encargues" ? "index.html" : "stock.html";
   const seccionLabel = p.seccion === "encargues" ? "Encargues" : "Stock";
   const reales = (p.imagenes || []).filter(Boolean);          // solo fotos reales cargadas
   const imgs = reales.length ? reales : [L.placeholder(p.nombre)]; // para la galería
