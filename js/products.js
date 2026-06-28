@@ -93,7 +93,7 @@ const PRODUCTOS = [
     ],
   },
   {
-    nombre: "Nike Tech Flecce ( Modelo Nuevo )",
+    nombre: "Conjuntos Nike Tech ( Modelo Nuevo )",
     marca: "Nike", categoria: "conjuntos", seccion: "encargues",
     precio: 0,
     talles: ["M","L","XL","XXL"],
