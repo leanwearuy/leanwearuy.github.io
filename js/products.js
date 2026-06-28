@@ -38,7 +38,7 @@ const PRODUCTOS = [
     ],
   },
   {
-    nombre: "Pantalón nike tech baggy",
+    nombre: "Pantalón Nike Tech ( Baggy )",
     marca: "Nike", categoria: "pantalones", seccion: "encargues",
     precio: 0,
     talles: ["S","M","L","XL"],
