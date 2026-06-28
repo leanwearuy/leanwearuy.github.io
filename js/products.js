@@ -59,9 +59,9 @@ const PRODUCTOS = [
     colores: ["Negro","Azul","Verde","Gris"],
     imagenes: [
       "assets/nike/nike-tech-flecce-modelo-nuevo-1.jpg",
-      "assets/nike/nike-tech-flecce-modelo-nuevo-1.jpg",
       "assets/nike/nike-tech-flecce-modelo-nuevo-2.jpg",
       "assets/nike/nike-tech-flecce-modelo-nuevo-3.jpg",
+      "assets/nike/nike-tech-flecce-modelo-nuevo-4.jpg",
     ],
     destacado: true,
   },
