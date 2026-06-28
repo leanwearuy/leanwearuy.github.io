@@ -175,6 +175,11 @@
     if (state.sort === "precio-asc") list.sort((a, b) => (a.precio || 0) - (b.precio || 0));
     else if (state.sort === "precio-desc") list.sort((a, b) => (b.precio || 0) - (a.precio || 0));
     else if (state.sort === "nombre") list.sort((a, b) => a.nombre.localeCompare(b.nombre));
+    else {
+      // "Recomendados": destacados primero, agotados al final, el resto en tu orden manual.
+      const rank = (p) => (p.agotado ? 2 : (p.destacado ? 0 : 1));
+      list.sort((a, b) => rank(a) - rank(b)); // Array.sort es estable: mantiene tu orden dentro de cada grupo
+    }
     return list;
   }
 

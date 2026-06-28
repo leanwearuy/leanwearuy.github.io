@@ -51,7 +51,7 @@
       </div>
 
       <div class="pg-info">
-        <h1 class="pg-title">${p.nombre}</h1>
+        <h1 class="pg-title">${L.tidyName(p.nombre)}</h1>
         <div class="pg-tags">
           <span class="pg-tag">${L.catLabel(p.categoria)}</span>
           ${p.marca ? `<span class="pg-tag">${p.marca}</span>` : ""}

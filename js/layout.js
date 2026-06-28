@@ -151,6 +151,8 @@
     typeof PRODUCTOS !== "undefined" ? PRODUCTOS.find((p) => productId(p) === id) : null;
 
   const cap = (s) => (s || "").charAt(0).toUpperCase() + (s || "").slice(1);
+  // Pega los paréntesis a su palabra (espacio que no corta) para que no quede ")" colgando.
+  const tidyName = (s) => (s || "").replace(/\(\s+/g, "(\u00A0").replace(/\s+\)/g, "\u00A0)");
   const catLabel = (s) =>
     (typeof CATEGORIAS !== "undefined" && CATEGORIAS[s] && CATEGORIAS[s].label) || cap(s);
   const precioFmt = (n) =>
@@ -193,7 +195,7 @@
           ${badge}
         </div>
         <div class="card-body">
-          <p class="card-name">${p.nombre}</p>
+          <p class="card-name">${tidyName(p.nombre)}</p>
           <div class="card-foot">
             <span class="card-price">${precioFmt(p.precio)}</span>
           </div>
@@ -204,6 +206,6 @@
   // Expuesto para catalog.js y producto.js.
   window.LeanWear = {
     igProfile, igDM, slug, productId, findProduct, catLabel, precioFmt,
-    placeholder, imgSrc, onErr, similares, cardHTML,
+    placeholder, imgSrc, onErr, similares, cardHTML, tidyName,
   };
 })();
