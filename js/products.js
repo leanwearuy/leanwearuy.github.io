@@ -46,9 +46,9 @@ const PRODUCTOS = [
     colores: ["Negro","Blanco"],
     imagenes: [
       "assets/louis-vuitton/cinto-louis-vuitton-1.jpg",
-      "assets/louis-vuitton/cinto-louis-vuitton-1.jpg",
       "assets/louis-vuitton/cinto-louis-vuitton-2.jpg",
       "assets/louis-vuitton/cinto-louis-vuitton-3.jpg",
+      "assets/louis-vuitton/cinto-louis-vuitton-4.jpg",
     ],
   },
   {
