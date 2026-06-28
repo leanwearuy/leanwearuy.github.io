@@ -164,6 +164,7 @@
     const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}` + (path ? `/${path}` : "");
     return fetch(url, {
       ...opts,
+      cache: "no-store", // evita respuestas viejas cacheadas (causa del error 422 "sha")
       headers: {
         "Authorization": `Bearer ${cfg.token}`,
         "Accept": "application/vnd.github+json",
@@ -300,7 +301,14 @@
           const f = im.file;
           const ext = (f.name.split(".").pop() || "jpg").toLowerCase();
           const path = await freePath(`assets/${marcaSlug}/${prodSlug}`, ext);
-          await putFile(path, await b64File(f), `img: ${p.nombre}`);
+          const content = await b64File(f);
+          try {
+            await putFile(path, content, `img: ${p.nombre}`);
+          } catch (err) {
+            // Si justo ya existía, la actualizo con su sha en vez de fallar.
+            const ex = await getFile(path);
+            await putFile(path, content, `img: ${p.nombre}`, ex && ex.sha);
+          }
           p.imagenes.push(path);
           log(`  ✓ ${path}`, "ok");
         }
