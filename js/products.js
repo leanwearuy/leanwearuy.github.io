@@ -24,6 +24,21 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Pantalón nike tech baggy",
+    marca: "Nike", categoria: "pantalones", seccion: "encargues",
+    precio: 0,
+    talles: ["S","M","L","XL"],
+    colores: ["Negro","Gris","Verde","Azul Oscuro","Crema"],
+    imagenes: [
+      "assets/nike/pantalon-nike-tech-baggy-1.jpg",
+      "assets/nike/pantalon-nike-tech-baggy-2.jpg",
+      "assets/nike/pantalon-nike-tech-baggy-3.jpg",
+      "assets/nike/pantalon-nike-tech-baggy-4.jpg",
+      "assets/nike/pantalon-nike-tech-baggy-5.jpg",
+      "assets/nike/pantalon-nike-tech-baggy-6.jpg",
+    ],
+  },
+  {
     nombre: "Jordan 5 University Blue",
     marca: "Jordan", categoria: "zapatos", seccion: "encargues",
     precio: 0,
