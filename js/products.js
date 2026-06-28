@@ -31,7 +31,6 @@ const PRODUCTOS = [
     imagenes: [
       "assets/jordan/jordan-5-midnight-navy-1.jpeg",
       "assets/jordan/jordan-5-midnight-navy-2.jpeg",
-      "assets/jordan/jordan-5-midnight-navy-2.jpeg",
       "assets/jordan/jordan-5-midnight-navy-3.jpeg",
       "assets/jordan/jordan-5-midnight-navy-4.jpeg",
       "assets/jordan/jordan-5-midnight-navy-5.jpeg",
