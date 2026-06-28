@@ -24,6 +24,20 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Nike Tech Flecce ( Modelo Nuevo )",
+    marca: "NIke", categoria: "conjuntos", seccion: "encargues",
+    precio: 0,
+    talles: ["M","L","XL","XXL"],
+    colores: ["Negro","Azul","Verde","Gris"],
+    imagenes: [
+      "assets/nike/nike-tech-flecce-modelo-nuevo-1.jpg",
+      "assets/nike/nike-tech-flecce-modelo-nuevo-1.jpg",
+      "assets/nike/nike-tech-flecce-modelo-nuevo-2.jpg",
+      "assets/nike/nike-tech-flecce-modelo-nuevo-3.jpg",
+    ],
+    destacado: true,
+  },
+  {
     nombre: "Conjuntos Nike Tech ( Modelo Viejo )",
     marca: "Nike", categoria: "conjuntos", seccion: "encargues",
     precio: 0,
