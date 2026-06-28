@@ -24,7 +24,7 @@
 
 const PRODUCTOS = [
   {
-    nombre: "Jordan 4 Thunder",
+    nombre: "Jordan 4 Yellow Thunder",
     marca: "Jordan", categoria: "zapatos", seccion: "encargues",
     precio: 0,
     talles: ["40 40.5 41 42 42.5 43 44 44.5 45 46 47.5"],
