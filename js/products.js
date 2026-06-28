@@ -25,7 +25,7 @@
 const PRODUCTOS = [
   {
     nombre: "Nike Tech Flecce ( Modelo Nuevo )",
-    marca: "NIke", categoria: "conjuntos", seccion: "encargues",
+    marca: "Nike", categoria: "conjuntos", seccion: "encargues",
     precio: 0,
     talles: ["M","L","XL","XXL"],
     colores: ["Negro","Azul","Verde","Gris"],
