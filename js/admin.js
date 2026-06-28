@@ -61,12 +61,14 @@
     if (inited) return;
     inited = true;
 
-    // Categorías desde config.js (evita errores de slug)
-    const sel = $("fCategoria");
-    const cats = (typeof CATEGORIAS !== "undefined") ? CATEGORIAS : {};
-    sel.innerHTML = Object.entries(cats)
-      .map(([slugCat, info]) => `<option value="${slugCat}">${info.label}</option>`)
-      .join("") || `<option value="otros">Otros</option>`;
+    // Categorías desde config.js (evita errores de slug) + opción para crear nuevas
+    poblarCategorias();
+    const grupos = (typeof GRUPOS_ORDEN !== "undefined" ? GRUPOS_ORDEN : ["Ropa", "Calzado", "Accesorios"])
+      .filter((g) => g !== "Otros");
+    $("newCatGrupo").innerHTML = grupos.map((g) => `<option value="${g}">${g}</option>`).join("");
+    $("fCategoria").addEventListener("change", () => {
+      $("newCatBox").hidden = $("fCategoria").value !== "__new__";
+    });
 
     // Config GitHub guardada + valores por defecto de este proyecto.
     const saved = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
@@ -103,6 +105,15 @@
 
     // Si ya hay token guardado, cargar la lista al entrar.
     if ((saved.token || "").trim()) loadProductos();
+  }
+
+  // Llena el select de categorías + la opción "Agregar nueva".
+  function poblarCategorias() {
+    const sel = $("fCategoria");
+    const cats = (typeof CATEGORIAS !== "undefined") ? CATEGORIAS : {};
+    sel.innerHTML = Object.entries(cats)
+      .map(([s, info]) => `<option value="${s}">${info.label}</option>`).join("")
+      + `<option value="__new__">➕ Agregar nueva categoría…</option>`;
   }
 
   function getCfg() {
@@ -188,6 +199,21 @@
     const res = await gh(`contents/${encPath(path)}`, { method: "PUT", body: JSON.stringify(body) });
     if (!res.ok) throw new Error(`Error subiendo ${path}: ${res.status} ${await res.text()}`);
     return res.json();
+  }
+
+  // Agrega una categoría nueva a CATEGORIAS en config.js (commit).
+  async function addCategoria(catSlug, label, grupo) {
+    const file = await getFile("js/config.js");
+    if (!file) throw new Error("No encontré js/config.js");
+    let text = decodeText(file.content);
+    if (new RegExp("\\n\\s*" + catSlug + ":\\s*\\{").test(text)) return; // ya existe
+    const marker = "const CATEGORIAS = {";
+    const idx = text.indexOf(marker);
+    if (idx < 0) throw new Error('No encontré "const CATEGORIAS = {" en config.js');
+    const pos = idx + marker.length;
+    const line = `\n  ${catSlug}: { label: ${JSON.stringify(label)}, grupo: ${JSON.stringify(grupo)} },`;
+    text = text.slice(0, pos) + line + text.slice(pos);
+    await putFile("js/config.js", b64Text(text), `categoria: ${label}`, file.sha);
   }
 
   async function probarConexion() {
@@ -279,6 +305,17 @@
       imagenes: [],
     };
 
+    // ¿Categoría nueva? (opción "Agregar nueva categoría")
+    let nuevaCat = null;
+    if (p.categoria === "__new__") {
+      const label = $("newCatLabel").value.trim();
+      const grupo = $("newCatGrupo").value;
+      p.categoria = slug(label);
+      if (!label || !p.categoria) { $("log").textContent = ""; return log("✗ Escribí el nombre de la nueva categoría.", "bad"); }
+      const yaExiste = (typeof CATEGORIAS !== "undefined") && CATEGORIAS[p.categoria];
+      if (!yaExiste) nuevaCat = { slug: p.categoria, label, grupo };
+    }
+
     // Validaciones
     if (!cfg.owner || !cfg.repo || !cfg.token) return setStatus("Configurá la conexión con GitHub (paso 1).", "bad");
     if (!p.nombre || !p.marca || !p.categoria) { $("log").textContent = ""; return log("✗ Faltan campos obligatorios (nombre, marca, categoría).", "bad"); }
@@ -314,6 +351,14 @@
         }
       } else {
         log("Sin imágenes: se usará un placeholder en el sitio.", "info");
+      }
+
+      // 1.5) Crear la categoría nueva (si corresponde)
+      if (nuevaCat) {
+        log(`Creando categoría "${nuevaCat.label}"...`, "info");
+        await addCategoria(nuevaCat.slug, nuevaCat.label, nuevaCat.grupo);
+        if (typeof CATEGORIAS !== "undefined") CATEGORIAS[nuevaCat.slug] = { label: nuevaCat.label, grupo: nuevaCat.grupo };
+        log("  ✓ categoría agregada", "ok");
       }
 
       // 2) Actualizar products.js (agregar o reemplazar el bloque)
@@ -486,8 +531,10 @@
 
   // Vuelve al modo "agregar": limpia todo.
   function salirEdicion() {
-    ["fNombre", "fMarca", "fPrecio", "fTalles", "fColores", "fDescripcion"].forEach((id) => $(id).value = "");
+    ["fNombre", "fMarca", "fPrecio", "fTalles", "fColores", "fDescripcion", "newCatLabel"].forEach((id) => $(id).value = "");
     $("fDestacado").checked = false; $("fAgotado").checked = false;
+    poblarCategorias();           // refresca el select (incluye categorías nuevas)
+    $("newCatBox").hidden = true;
     imgFiles = []; renderPreviews();
     editCtx = null;
     $("publishBtn").textContent = "Publicar producto";
