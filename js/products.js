@@ -31,6 +31,10 @@ const PRODUCTOS = [
     colores: ["Negro"],
     imagenes: [
       "assets/corteiz/campera-corteiz-1.jpg",
+      "assets/corteiz/campera-corteiz-2.jpg",
+      "assets/corteiz/campera-corteiz-3.jpg",
+      "assets/corteiz/campera-corteiz-4.jpg",
+      "assets/corteiz/campera-corteiz-5.jpg",
     ],
   },
   {
