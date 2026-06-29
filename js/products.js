@@ -54,7 +54,7 @@ const PRODUCTOS = [
   {
     nombre: "Campera Corteiz x DenimTears",
     marca: "Corteiz", categoria: "camperas", seccion: "encargues",
-    precio: 0,
+    precio: 7500,
     talles: ["S","M","L","XL"],
     colores: ["Negro","Gris"],
     imagenes: [
