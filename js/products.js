@@ -30,6 +30,12 @@ const PRODUCTOS = [
     talles: ["S","M","L","XL"],
     imagenes: [
       "assets/corteiz/cargo-corteiz-1.jpg",
+      "assets/corteiz/cargo-corteiz-2.jpg",
+      "assets/corteiz/cargo-corteiz-3.jpg",
+      "assets/corteiz/cargo-corteiz-4.jpg",
+      "assets/corteiz/cargo-corteiz-5.jpg",
+      "assets/corteiz/cargo-corteiz-6.jpg",
+      "assets/corteiz/cargo-corteiz-7.jpg",
     ],
   },
   {
