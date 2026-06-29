@@ -31,6 +31,10 @@ const PRODUCTOS = [
     colores: ["Negro"],
     imagenes: [
       "assets/corteiz/pantalon-corteiz-1.jpg",
+      "assets/corteiz/pantalon-corteiz-2.jpg",
+      "assets/corteiz/pantalon-corteiz-3.jpg",
+      "assets/corteiz/pantalon-corteiz-4.jpg",
+      "assets/corteiz/pantalon-corteiz-5.jpg",
     ],
   },
   {
