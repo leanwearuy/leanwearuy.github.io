@@ -24,6 +24,15 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Cargo Corteiz",
+    marca: "Corteiz", categoria: "pantalones", seccion: "encargues",
+    precio: 0,
+    talles: ["S","M","L","XL"],
+    imagenes: [
+      "assets/corteiz/cargo-corteiz-1.jpg",
+    ],
+  },
+  {
     nombre: "Jordan 4 Infrared",
     marca: "Jordan", categoria: "zapatos", seccion: "encargues",
     precio: 0,
