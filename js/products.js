@@ -29,7 +29,7 @@ const PRODUCTOS = [
     precio: 0,
     talles: ["40","40.5","41","42","42.5","43","44","44.5","45","46","47.5"],
     imagenes: [
-      "assets/jordan/jordan-4-white-thunder-1.jpeg",
+      "assets/jordan/jordan-4-white-thunder-5.jpeg",
       "assets/jordan/jordan-4-white-thunder-1.jpeg",
       "assets/jordan/jordan-4-white-thunder-2.jpeg",
       "assets/jordan/jordan-4-white-thunder-3.jpeg",
