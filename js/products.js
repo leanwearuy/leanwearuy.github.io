@@ -24,6 +24,16 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Pantalón Corteiz",
+    marca: "Corteiz", categoria: "pantalones", seccion: "encargues",
+    precio: 0,
+    talles: ["S","M","L","XL"],
+    colores: ["Negro"],
+    imagenes: [
+      "assets/corteiz/pantalon-corteiz-1.jpg",
+    ],
+  },
+  {
     nombre: "Campera Corteiz x DenimTears",
     marca: "Corteiz", categoria: "camperas", seccion: "encargues",
     precio: 0,
