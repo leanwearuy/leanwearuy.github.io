@@ -31,6 +31,9 @@ const PRODUCTOS = [
     colores: ["Verde"],
     imagenes: [
       "assets/corteiz/remera-camuflada-corteiz-1.jpg",
+      "assets/corteiz/remera-camuflada-corteiz-2.jpg",
+      "assets/corteiz/remera-camuflada-corteiz-3.jpg",
+      "assets/corteiz/remera-camuflada-corteiz-4.jpg",
     ],
   },
   {
