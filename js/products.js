@@ -26,7 +26,7 @@ const PRODUCTOS = [
   {
     nombre: "Campera Corteiz",
     marca: "Corteiz", categoria: "camperas", seccion: "encargues",
-    precio: 0,
+    precio: 5200,
     talles: ["S","M","L","XL"],
     colores: ["Negro"],
     imagenes: [
