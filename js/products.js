@@ -31,6 +31,14 @@ const PRODUCTOS = [
     colores: ["Negro ( Logo Negro )","Negro ( Logo Blanco )","Blanca ( Logo Blanca )"],
     imagenes: [
       "assets/corteiz/remeras-corteiz-1.jpg",
+      "assets/corteiz/remeras-corteiz-2.jpg",
+      "assets/corteiz/remeras-corteiz-3.jpg",
+      "assets/corteiz/remeras-corteiz-4.jpg",
+      "assets/corteiz/remeras-corteiz-5.jpg",
+      "assets/corteiz/remeras-corteiz-6.jpg",
+      "assets/corteiz/remeras-corteiz-7.jpg",
+      "assets/corteiz/remeras-corteiz-8.jpg",
+      "assets/corteiz/remeras-corteiz-9.jpg",
     ],
   },
   {
