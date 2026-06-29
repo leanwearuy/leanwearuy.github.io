@@ -24,6 +24,16 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Remera Camuflada Corteiz",
+    marca: "Corteiz", categoria: "remeras", seccion: "encargues",
+    precio: 2800,
+    talles: ["S","M","L","XL"],
+    colores: ["Verde"],
+    imagenes: [
+      "assets/corteiz/remera-camuflada-corteiz-1.jpg",
+    ],
+  },
+  {
     nombre: "Campera Corteiz",
     marca: "Corteiz", categoria: "camperas", seccion: "encargues",
     precio: 5200,
