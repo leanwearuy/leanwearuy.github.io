@@ -62,6 +62,7 @@ const PRODUCTOS = [
     marca: "Corteiz", categoria: "camperas", seccion: "encargues",
     precio: 0,
     talles: ["S","M","L","XL"],
+    colores: ["Negro"],
     imagenes: [
       "assets/corteiz/puffer-corteiz-1.jpg",
       "assets/corteiz/puffer-corteiz-2.jpg",
