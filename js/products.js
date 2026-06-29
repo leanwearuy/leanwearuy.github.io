@@ -30,6 +30,10 @@ const PRODUCTOS = [
     talles: ["40","40.5","41","42","42.5","43","44","44.5","45","46","47.5"],
     imagenes: [
       "assets/jordan/jordan-5-toro-bravo-1.jpeg",
+      "assets/jordan/jordan-5-toro-bravo-2.jpeg",
+      "assets/jordan/jordan-5-toro-bravo-3.jpeg",
+      "assets/jordan/jordan-5-toro-bravo-4.jpeg",
+      "assets/jordan/jordan-5-toro-bravo-5.jpeg",
     ],
   },
   {
