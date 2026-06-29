@@ -76,6 +76,7 @@ const PRODUCTOS = [
     marca: "Corteiz", categoria: "pantalones", seccion: "encargues",
     precio: 0,
     talles: ["S","M","L","XL"],
+    colores: ["Negro"],
     imagenes: [
       "assets/corteiz/cargo-corteiz-1.jpg",
       "assets/corteiz/cargo-corteiz-2.jpg",
