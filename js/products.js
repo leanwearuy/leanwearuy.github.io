@@ -24,6 +24,16 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Remeras Corteiz",
+    marca: "Corteiz", categoria: "camisetas", seccion: "encargues",
+    precio: 0,
+    talles: ["S","M","L","XL"],
+    colores: ["Negro ( Logo Negro )","Negro ( Logo Blanco )","Blanca ( Logo Blanca )"],
+    imagenes: [
+      "assets/corteiz/remeras-corteiz-1.jpg",
+    ],
+  },
+  {
     nombre: "Puffer Corteiz",
     marca: "Corteiz", categoria: "camperas", seccion: "encargues",
     precio: 0,
