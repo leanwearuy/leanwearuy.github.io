@@ -30,6 +30,10 @@ const PRODUCTOS = [
     talles: ["S","M","L","XL"],
     imagenes: [
       "assets/corteiz/puffer-corteiz-1.jpg",
+      "assets/corteiz/puffer-corteiz-2.jpg",
+      "assets/corteiz/puffer-corteiz-3.jpg",
+      "assets/corteiz/puffer-corteiz-4.jpg",
+      "assets/corteiz/puffer-corteiz-5.jpg",
     ],
   },
   {
