@@ -1,0 +1,6 @@
+# Archivos que NO se suben a Cloudflare (no son parte del sitio)
+.git
+.gitignore
+.assetsignore
+wrangler.jsonc
+README.md
