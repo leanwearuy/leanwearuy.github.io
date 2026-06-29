@@ -24,6 +24,15 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Jordan 5 Toro Bravo",
+    marca: "Jordan", categoria: "zapatos", seccion: "encargues",
+    precio: 0,
+    talles: ["40","40.5","41","42","42.5","43","44","44.5","45","46","47.5"],
+    imagenes: [
+      "assets/jordan/jordan-5-toro-bravo-1.jpeg",
+    ],
+  },
+  {
     nombre: "Jordan 4 White Thunder",
     marca: "Jordan", categoria: "zapatos", seccion: "encargues",
     precio: 0,
