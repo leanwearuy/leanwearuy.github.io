@@ -156,7 +156,7 @@
   const catLabel = (s) =>
     (typeof CATEGORIAS !== "undefined" && CATEGORIAS[s] && CATEGORIAS[s].label) || cap(s);
   const precioFmt = (n) =>
-    typeof n === "number" ? `${CONFIG.moneda} ${n.toLocaleString("es-AR")}` : "Consultar";
+    (typeof n === "number" && n > 0) ? `${CONFIG.moneda} ${n.toLocaleString("es-AR")}` : "Consultar";
 
   function placeholder(nombre) {
     const ini = (nombre || "LW").trim().slice(0, 16);

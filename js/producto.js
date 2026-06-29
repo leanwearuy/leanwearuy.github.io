@@ -63,7 +63,7 @@
           <button class="pg-action" type="button" id="linkBtn">🔗 Copiar enlace</button>
         </div>
 
-        <p class="pg-price">${L.precioFmt(p.precio)}</p>
+        <p class="pg-price">${p.precio > 0 ? L.precioFmt(p.precio) : "Consultar por Instagram"}</p>
 
         ${p.colores && p.colores.length ? `
         <div class="pg-block">

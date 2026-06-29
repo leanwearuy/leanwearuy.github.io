@@ -480,7 +480,7 @@
         ${thumb}
         <div class="pr-info">
           <b>${m.nombre || "(sin nombre)"}</b>
-          <span class="pr-sub">${[m.marca, m.seccion, m.precio ? CONFIG.moneda + " " + m.precio : ""].filter(Boolean).join(" · ")}</span>
+          <span class="pr-sub">${[m.marca, m.seccion, (m.precio && m.precio !== "0") ? CONFIG.moneda + " " + m.precio : "A consultar"].filter(Boolean).join(" · ")}</span>
         </div>
         <div class="pr-actions">
           <button class="pr-edit" data-k="${k}">Editar</button>
