@@ -24,6 +24,15 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Puffer Corteiz",
+    marca: "Corteiz", categoria: "camperas", seccion: "encargues",
+    precio: 0,
+    talles: ["S","M","L","XL"],
+    imagenes: [
+      "assets/corteiz/puffer-corteiz-1.jpg",
+    ],
+  },
+  {
     nombre: "Cargo Corteiz",
     marca: "Corteiz", categoria: "pantalones", seccion: "encargues",
     precio: 0,
