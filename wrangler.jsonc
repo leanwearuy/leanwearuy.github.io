@@ -1,0 +1,9 @@
+{
+  // Config para desplegar el sitio ESTÁTICO en Cloudflare (Workers con assets).
+  // No hay código de servidor: solo sirve los archivos de la carpeta.
+  "name": "leanwearuy",
+  "compatibility_date": "2024-11-01",
+  "assets": {
+    "directory": "."
+  }
+}
