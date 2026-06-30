@@ -61,6 +61,12 @@ const PRODUCTOS = [
     colores: ["Negro","Blanco"],
     imagenes: [
       "assets/corteiz/remera-corteiz-diseno-armas-1.jpg",
+      "assets/corteiz/remera-corteiz-diseno-armas-2.jpg",
+      "assets/corteiz/remera-corteiz-diseno-armas-3.jpg",
+      "assets/corteiz/remera-corteiz-diseno-armas-4.jpg",
+      "assets/corteiz/remera-corteiz-diseno-armas-5.jpg",
+      "assets/corteiz/remera-corteiz-diseno-armas-6.jpg",
+      "assets/corteiz/remera-corteiz-diseno-armas-7.jpg",
     ],
   },
   {
