@@ -139,7 +139,7 @@ const PRODUCTOS = [
   {
     nombre: "Cargo Corteiz",
     marca: "Corteiz", categoria: "pantalones", seccion: "encargues",
-    precio: 0,
+    precio: 5800,
     talles: ["S","M","L","XL"],
     colores: ["Negro"],
     imagenes: [
