@@ -31,6 +31,12 @@ const PRODUCTOS = [
     colores: ["Gris"],
     imagenes: [
       "assets/corteiz/campera-corteiz-rulestheworld-1.jpg",
+      "assets/corteiz/campera-corteiz-rulestheworld-2.jpg",
+      "assets/corteiz/campera-corteiz-rulestheworld-3.jpg",
+      "assets/corteiz/campera-corteiz-rulestheworld-4.jpg",
+      "assets/corteiz/campera-corteiz-rulestheworld-5.jpg",
+      "assets/corteiz/campera-corteiz-rulestheworld-6.jpg",
+      "assets/corteiz/campera-corteiz-rulestheworld-7.jpg",
     ],
   },
   {
