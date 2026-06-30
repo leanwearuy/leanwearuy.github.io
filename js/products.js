@@ -328,7 +328,8 @@ const PRODUCTOS = [
   {
     nombre: "Conjuntos Nike Tech ( Modelo Nuevo )",
     marca: "Nike", categoria: "conjuntos", seccion: "encargues",
-    precio: 0,
+    precio: 4500,
+    descripcion: "Se puede pedir por separado también. Consultar precios.",
     talles: ["M","L","XL","XXL"],
     colores: ["Negro","Azul","Verde","Gris"],
     imagenes: [
