@@ -106,7 +106,7 @@ const PRODUCTOS = [
   },
   {
     nombre: "Remeras Corteiz",
-    marca: "Corteiz", categoria: "camisetas", seccion: "encargues",
+    marca: "Corteiz", categoria: "remeras", seccion: "encargues",
     precio: 2200,
     talles: ["S","M","L","XL"],
     colores: ["Negro ( Logo Negro )","Negro ( Logo Blanco )","Blanca ( Logo Blanca )"],
