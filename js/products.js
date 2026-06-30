@@ -24,6 +24,16 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Hoddie Corteiz x Supreme",
+    marca: "Corteiz", categoria: "buzos", seccion: "encargues",
+    precio: 7000,
+    talles: ["S","M","L","XL"],
+    colores: ["Negro"],
+    imagenes: [
+      "assets/corteiz/hoddie-corteiz-x-supreme-1.jpg",
+    ],
+  },
+  {
     nombre: "Remera Corteiz x Supreme",
     marca: "Corteiz", categoria: "remeras", seccion: "encargues",
     precio: 4500,
