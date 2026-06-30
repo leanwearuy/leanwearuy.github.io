@@ -31,6 +31,12 @@ const PRODUCTOS = [
     colores: ["Negro","Blanco"],
     imagenes: [
       "assets/corteiz/remera-corteiz-x-supreme-1.jpg",
+      "assets/corteiz/remera-corteiz-x-supreme-2.jpg",
+      "assets/corteiz/remera-corteiz-x-supreme-3.jpg",
+      "assets/corteiz/remera-corteiz-x-supreme-4.jpg",
+      "assets/corteiz/remera-corteiz-x-supreme-5.jpg",
+      "assets/corteiz/remera-corteiz-x-supreme-6.jpg",
+      "assets/corteiz/remera-corteiz-x-supreme-7.jpg",
     ],
   },
   {
