@@ -24,6 +24,16 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Remera Corteiz x Supreme",
+    marca: "Corteiz", categoria: "remeras", seccion: "encargues",
+    precio: 4500,
+    talles: ["S","M","L","XL"],
+    colores: ["Negro","Blanco"],
+    imagenes: [
+      "assets/corteiz/remera-corteiz-x-supreme-1.jpg",
+    ],
+  },
+  {
     nombre: "Remera Corteiz ( Con Diseño )",
     marca: "Corteiz", categoria: "remeras", seccion: "encargues",
     precio: 2200,
