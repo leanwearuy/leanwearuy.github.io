@@ -31,6 +31,11 @@ const PRODUCTOS = [
     colores: ["Negro"],
     imagenes: [
       "assets/corteiz/hoddie-corteiz-x-supreme-1.jpg",
+      "assets/corteiz/hoddie-corteiz-x-supreme-2.jpg",
+      "assets/corteiz/hoddie-corteiz-x-supreme-3.jpg",
+      "assets/corteiz/hoddie-corteiz-x-supreme-4.jpg",
+      "assets/corteiz/hoddie-corteiz-x-supreme-5.jpg",
+      "assets/corteiz/hoddie-corteiz-x-supreme-6.jpg",
     ],
   },
   {
