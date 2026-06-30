@@ -24,6 +24,16 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Campera Corteiz RulesTheWorld",
+    marca: "Corteiz", categoria: "camperas", seccion: "encargues",
+    precio: 5800,
+    talles: ["S","M","L","XL"],
+    colores: ["Gris"],
+    imagenes: [
+      "assets/corteiz/campera-corteiz-rulestheworld-1.jpg",
+    ],
+  },
+  {
     nombre: "Hoddie Corteiz x Supreme",
     marca: "Corteiz", categoria: "buzos", seccion: "encargues",
     precio: 7000,
