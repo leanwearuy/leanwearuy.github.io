@@ -24,6 +24,16 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Hoddie Jordan Paris",
+    marca: "Jordan", categoria: "buzos", seccion: "encargues",
+    precio: 4800,
+    talles: ["M","L","XL","XXL"],
+    colores: ["Negro"],
+    imagenes: [
+      "assets/jordan/hoddie-jordan-paris-1.jpg",
+    ],
+  },
+  {
     nombre: "Campera Jordan",
     marca: "Jordan", categoria: "camperas", seccion: "encargues",
     precio: 3900,
