@@ -31,6 +31,12 @@ const PRODUCTOS = [
     colores: ["Negro"],
     imagenes: [
       "assets/jordan/hoddie-jordan-paris-1.jpg",
+      "assets/jordan/hoddie-jordan-paris-2.jpg",
+      "assets/jordan/hoddie-jordan-paris-3.jpg",
+      "assets/jordan/hoddie-jordan-paris-4.jpg",
+      "assets/jordan/hoddie-jordan-paris-5.jpg",
+      "assets/jordan/hoddie-jordan-paris-6.jpg",
+      "assets/jordan/hoddie-jordan-paris-7.jpg",
     ],
   },
   {
