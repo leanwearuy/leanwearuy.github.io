@@ -24,6 +24,16 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Campera Jordan",
+    marca: "Jordan", categoria: "camperas", seccion: "encargues",
+    precio: 3900,
+    talles: ["M","L","XL","XXL"],
+    colores: ["Negro","Blanco"],
+    imagenes: [
+      "assets/jordan/campera-jordan-1.jpg",
+    ],
+  },
+  {
     nombre: "Campera Corteiz RulesTheWorld",
     marca: "Corteiz", categoria: "camperas", seccion: "encargues",
     precio: 5800,
