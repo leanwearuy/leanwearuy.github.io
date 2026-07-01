@@ -47,6 +47,9 @@ const PRODUCTOS = [
     colores: ["Negro","Blanco"],
     imagenes: [
       "assets/jordan/campera-jordan-1.jpg",
+      "assets/jordan/campera-jordan-2.jpg",
+      "assets/jordan/campera-jordan-3.jpg",
+      "assets/jordan/campera-jordan-4.jpg",
     ],
   },
   {
