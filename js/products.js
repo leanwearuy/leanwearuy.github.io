@@ -288,7 +288,7 @@ const PRODUCTOS = [
   {
     nombre: "Jordan 4 Yellow Thunder",
     marca: "Jordan", categoria: "zapatos", seccion: "encargues",
-    precio: 0,
+    precio: 7590,
     talles: ["40","40.5","41","42","42.5","43","44","44.5","45","46","47.5"],
     imagenes: [
       "assets/jordan/jordan-4-thunder-5.jpeg",
