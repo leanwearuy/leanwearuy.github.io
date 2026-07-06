@@ -42,7 +42,7 @@ const PRODUCTOS = [
   {
     nombre: "Campera Jordan",
     marca: "Jordan", categoria: "camperas", seccion: "encargues",
-    precio: 3900,
+    precio: 3890,
     talles: ["M","L","XL","XXL"],
     colores: ["Negro","Blanco"],
     imagenes: [
