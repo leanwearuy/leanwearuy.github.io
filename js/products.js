@@ -159,7 +159,7 @@ const PRODUCTOS = [
   {
     nombre: "Pantalón Corteiz",
     marca: "Corteiz", categoria: "pantalones", seccion: "encargues",
-    precio: 3400,
+    precio: 3290,
     talles: ["S","M","L","XL"],
     colores: ["Negro"],
     imagenes: [
