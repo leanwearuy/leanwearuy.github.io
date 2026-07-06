@@ -86,7 +86,7 @@ const PRODUCTOS = [
   {
     nombre: "Remera Corteiz x Supreme",
     marca: "Corteiz", categoria: "remeras", seccion: "encargues",
-    precio: 4500,
+    precio: 4390,
     talles: ["S","M","L","XL"],
     colores: ["Negro","Blanco"],
     imagenes: [
