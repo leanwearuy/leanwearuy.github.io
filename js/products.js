@@ -55,7 +55,7 @@ const PRODUCTOS = [
   {
     nombre: "Campera Corteiz RulesTheWorld",
     marca: "Corteiz", categoria: "camperas", seccion: "encargues",
-    precio: 5800,
+    precio: 5590,
     talles: ["S","M","L","XL"],
     colores: ["Gris"],
     imagenes: [
