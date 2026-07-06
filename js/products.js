@@ -301,9 +301,8 @@ const PRODUCTOS = [
   {
     nombre: "Jordan 5 Midnight Navy",
     marca: "Jordan", categoria: "zapatos", seccion: "encargues",
-    precio: 0,
+    precio: 8990,
     talles: ["36","36.5","37.5","38","39","40","40.5","41","42","42.5","43","44","44.5","45","46","47.5"],
-    colores: ["8990"],
     imagenes: [
       "assets/jordan/jordan-5-midnight-navy-1.jpeg",
       "assets/jordan/jordan-5-midnight-navy-2.jpeg",
