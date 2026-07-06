@@ -71,7 +71,7 @@ const PRODUCTOS = [
   {
     nombre: "Hoddie Corteiz x Supreme",
     marca: "Corteiz", categoria: "buzos", seccion: "encargues",
-    precio: 7000,
+    precio: 6690,
     talles: ["S","M","L","XL"],
     colores: ["Negro"],
     imagenes: [
