@@ -132,7 +132,7 @@ const PRODUCTOS = [
   {
     nombre: "Remera Camuflada Corteiz",
     marca: "Corteiz", categoria: "remeras", seccion: "encargues",
-    precio: 2800,
+    precio: 2690,
     talles: ["S","M","L","XL"],
     colores: ["Verde"],
     imagenes: [
