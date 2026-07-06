@@ -26,7 +26,7 @@ const PRODUCTOS = [
   {
     nombre: "Hoddie Jordan Paris",
     marca: "Jordan", categoria: "buzos", seccion: "encargues",
-    precio: 4800,
+    precio: 4590,
     talles: ["M","L","XL","XXL"],
     colores: ["Negro"],
     imagenes: [
