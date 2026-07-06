@@ -373,7 +373,7 @@ const PRODUCTOS = [
   {
     nombre: "Conjuntos Nike Tech ( Modelo Viejo )",
     marca: "Nike", categoria: "conjuntos", seccion: "encargues",
-    precio: 5300,
+    precio: 5390,
     talles: ["S","M","L","XL"],
     colores: ["Negro","Gris","Azul","Rojo","Blanco","Blanco y Negro","Gris y Negro"],
     imagenes: [
