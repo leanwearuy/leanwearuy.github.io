@@ -315,7 +315,7 @@ const PRODUCTOS = [
   {
     nombre: "Pantalón Nike Tech ( Baggy )",
     marca: "Nike", categoria: "pantalones", seccion: "encargues",
-    precio: 3400,
+    precio: 3460,
     talles: ["S","M","L","XL"],
     colores: ["Negro","Gris","Verde","Azul Oscuro","Crema"],
     imagenes: [
