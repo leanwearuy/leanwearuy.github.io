@@ -189,7 +189,7 @@ const PRODUCTOS = [
   {
     nombre: "Remeras Corteiz",
     marca: "Corteiz", categoria: "remeras", seccion: "encargues",
-    precio: 2200,
+    precio: 2190,
     talles: ["S","M","L","XL"],
     colores: ["Negro ( Logo Negro )","Negro ( Logo Blanco )","Blanca ( Logo Blanca )"],
     imagenes: [
