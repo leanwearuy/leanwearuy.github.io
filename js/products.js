@@ -31,6 +31,12 @@ const PRODUCTOS = [
     colores: ["Negro","Gris"],
     imagenes: [
       "assets/jordan/pantalon-jordan-diseno-letras-v2-1.jpg",
+      "assets/jordan/pantalon-jordan-diseno-letras-v2-2.jpg",
+      "assets/jordan/pantalon-jordan-diseno-letras-v2-3.jpg",
+      "assets/jordan/pantalon-jordan-diseno-letras-v2-4.jpg",
+      "assets/jordan/pantalon-jordan-diseno-letras-v2-5.jpg",
+      "assets/jordan/pantalon-jordan-diseno-letras-v2-6.jpg",
+      "assets/jordan/pantalon-jordan-diseno-letras-v2-7.jpg",
     ],
   },
   {
