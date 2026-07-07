@@ -31,6 +31,13 @@ const PRODUCTOS = [
     colores: ["Negro","Gris"],
     imagenes: [
       "assets/jordan/pantalon-jordan-1.jpg",
+      "assets/jordan/pantalon-jordan-2.jpg",
+      "assets/jordan/pantalon-jordan-3.jpg",
+      "assets/jordan/pantalon-jordan-4.jpg",
+      "assets/jordan/pantalon-jordan-5.jpg",
+      "assets/jordan/pantalon-jordan-6.jpg",
+      "assets/jordan/pantalon-jordan-7.jpg",
+      "assets/jordan/pantalon-jordan-8.jpg",
     ],
   },
   {
