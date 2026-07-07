@@ -24,6 +24,16 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Pantalón Jordan ( Diseño Letras v2 )",
+    marca: "Jordan", categoria: "pantalones", seccion: "encargues",
+    precio: 2890,
+    talles: ["M","L","XL","XXL"],
+    colores: ["Negro","Gris"],
+    imagenes: [
+      "assets/jordan/pantalon-jordan-diseno-letras-v2-1.jpg",
+    ],
+  },
+  {
     nombre: "Pantalón Jordan ( Baggy )",
     marca: "Jordan", categoria: "pantalones", seccion: "encargues",
     precio: 3890,
