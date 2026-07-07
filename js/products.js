@@ -24,6 +24,16 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Pantalón Jordan",
+    marca: "Jordan", categoria: "pantalones", seccion: "encargues",
+    precio: 2890,
+    talles: ["M","L","XL","XXL"],
+    colores: ["Negro","Gris"],
+    imagenes: [
+      "assets/jordan/pantalon-jordan-1.jpg",
+    ],
+  },
+  {
     nombre: "Hoddie Jordan Paris",
     marca: "Jordan", categoria: "buzos", seccion: "encargues",
     precio: 4590,
