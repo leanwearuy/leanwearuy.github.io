@@ -24,6 +24,17 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Pantalón Jordan ( Baggy )",
+    marca: "Jordan", categoria: "pantalones", seccion: "encargues",
+    precio: 3890,
+    descripcion: "Pedir medidas por Instagram",
+    talles: ["S","M","L","XL","XXL"],
+    colores: ["Negro","Gris"],
+    imagenes: [
+      "assets/jordan/pantalon-jordan-baggy-1.jpg",
+    ],
+  },
+  {
     nombre: "Pantalón Jordan ( Diseño Letras )",
     marca: "Jordan", categoria: "pantalones", seccion: "encargues",
     precio: 2990,
