@@ -437,20 +437,6 @@ const PRODUCTOS = [
     ],
   },
   {
-    nombre: "Cinto Louis Vuitton",
-    marca: "Louis Vuitton", categoria: "cintos", seccion: "encargues",
-    precio: 0,
-    descripcion: "Tiene varios diseños diferentes, pedir foto por mensaje.",
-    talles: ["105cm","110cm","115cm","120cm","125cm"],
-    colores: ["Negro","Blanco"],
-    imagenes: [
-      "assets/louis-vuitton/cinto-louis-vuitton-1.jpg",
-      "assets/louis-vuitton/cinto-louis-vuitton-2.jpg",
-      "assets/louis-vuitton/cinto-louis-vuitton-3.jpg",
-      "assets/louis-vuitton/cinto-louis-vuitton-4.jpg",
-    ],
-  },
-  {
     nombre: "Conjuntos Nike Tech ( Modelo Nuevo )",
     marca: "Nike", categoria: "conjuntos", seccion: "encargues",
     precio: 4560,
