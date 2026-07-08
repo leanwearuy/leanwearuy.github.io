@@ -24,6 +24,16 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Conjunto Jordan Sport",
+    marca: "Jordan", categoria: "conjuntos", seccion: "encargues",
+    precio: 6690,
+    talles: ["S","M","L","XL","XXL"],
+    colores: ["Negro"],
+    imagenes: [
+      "assets/jordan/conjunto-jordan-sport-1.jpg",
+    ],
+  },
+  {
     nombre: "Jordan 4 Blue Thunder",
     marca: "Jordan", categoria: "zapatos", seccion: "encargues",
     precio: 5990,
