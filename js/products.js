@@ -24,6 +24,15 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Jordan 4 lightning",
+    marca: "Jordan", categoria: "zapatos", seccion: "encargues",
+    precio: 6890,
+    talles: ["36","37","38","39","40","41","42","43","44","45"],
+    imagenes: [
+      "assets/jordan/jordan-4-lightning-1.jpeg",
+    ],
+  },
+  {
     nombre: "Pantalón Jordan ( Diseño Letras v2 )",
     marca: "Jordan", categoria: "pantalones", seccion: "encargues",
     precio: 2890,
