@@ -18,6 +18,7 @@ const CONFIG = {
    funciona: aparece con su nombre capitalizado dentro de "Otros".
    ------------------------------------------------------------------- */
 const CATEGORIAS = {
+  shorts: { label: "Shorts", grupo: "Ropa" },
   cintos: { label: "Cintos", grupo: "Accesorios" },
   zapatos:    { label: "Zapatillas",        grupo: "Calzado" },
   botas:      { label: "Botas",             grupo: "Calzado" },
