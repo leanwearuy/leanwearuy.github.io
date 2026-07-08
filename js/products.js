@@ -31,6 +31,10 @@ const PRODUCTOS = [
     colores: ["Negro"],
     imagenes: [
       "assets/jordan/conjunto-jordan-sport-1.jpg",
+      "assets/jordan/conjunto-jordan-sport-2.jpg",
+      "assets/jordan/conjunto-jordan-sport-3.jpg",
+      "assets/jordan/conjunto-jordan-sport-4.jpg",
+      "assets/jordan/conjunto-jordan-sport-5.jpg",
     ],
   },
   {
