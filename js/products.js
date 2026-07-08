@@ -31,6 +31,13 @@ const PRODUCTOS = [
     colores: ["Negro","Blanco","Verde"],
     imagenes: [
       "assets/jordan/jordan-bag-airbone-festival-1.jpg",
+      "assets/jordan/jordan-bag-airbone-festival-2.jpg",
+      "assets/jordan/jordan-bag-airbone-festival-3.jpg",
+      "assets/jordan/jordan-bag-airbone-festival-4.jpg",
+      "assets/jordan/jordan-bag-airbone-festival-5.jpg",
+      "assets/jordan/jordan-bag-airbone-festival-6.jpg",
+      "assets/jordan/jordan-bag-airbone-festival-7.jpg",
+      "assets/jordan/jordan-bag-airbone-festival-8.jpg",
     ],
   },
   {
