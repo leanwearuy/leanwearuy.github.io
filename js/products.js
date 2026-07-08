@@ -303,7 +303,7 @@ const PRODUCTOS = [
   {
     nombre: "Puffer Corteiz",
     marca: "Corteiz", categoria: "camperas", seccion: "encargues",
-    precio: 0,
+    precio: 6590,
     talles: ["S","M","L","XL"],
     colores: ["Negro"],
     imagenes: [
