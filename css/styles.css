@@ -387,6 +387,11 @@ button { font-family: inherit; cursor: pointer; }
 .contact-list .ci { font-size: 1.25rem; }
 .steps { padding-left: 20px; color: var(--muted); display: flex; flex-direction: column; gap: 12px; }
 .steps strong { color: var(--text); }
+.cc-text { color: var(--muted); margin-bottom: 14px; }
+.cc-text strong { color: var(--text); }
+.cc-list { padding-left: 20px; color: var(--muted); display: flex; flex-direction: column; gap: 12px; }
+.cc-list strong { color: var(--text); }
+.cc-wide { grid-column: 1 / -1; }
 
 /* ===================== Responsive ===================== */
 @media (max-width: 1100px) {

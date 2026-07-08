@@ -49,7 +49,7 @@
           ${ICON.encargues}<span class="nav-text">Encargues</span>
         </a>
         <a href="contacto.html" data-page="contacto" class="${page === "contacto" ? "active" : ""}">
-          ${ICON.contacto}<span class="nav-text">Contacto</span>
+          ${ICON.contacto}<span class="nav-text">Cómo comprar</span>
         </a>
         <span class="account">${ICON.user}</span>
       </nav>
@@ -97,7 +97,7 @@
         <ul>
           <li><a href="index.html">Encargues</a></li>
           <li><a href="stock.html">Stock disponible</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="contacto.html">Cómo comprar</a></li>
         </ul>
       </div>
       <div class="footer-col">
