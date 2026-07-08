@@ -31,6 +31,11 @@ const PRODUCTOS = [
     colores: ["Negro"],
     imagenes: [
       "assets/jordan/short-jordan-flight-1.jpg",
+      "assets/jordan/short-jordan-flight-2.jpg",
+      "assets/jordan/short-jordan-flight-3.jpg",
+      "assets/jordan/short-jordan-flight-4.jpg",
+      "assets/jordan/short-jordan-flight-5.jpg",
+      "assets/jordan/short-jordan-flight-6.jpg",
     ],
   },
   {
