@@ -37,7 +37,8 @@
   const onErr = (p) => `this.onerror=null;this.src='${placeholder(p.nombre)}'`;
 
   /* ---------- Estado ---------- */
-  const state = { categoria: "all", marca: "all", q: "", sort: "reco", tab: "cat" };
+  const POR_PAGINA = 16; // productos por página (4 filas de 4). Cambiá este número si querés.
+  const state = { categoria: "all", marca: "all", q: "", sort: "reco", tab: "cat", page: 1 };
   // categoría inicial desde la URL (?cat=zapatos)
   const urlCat = new URLSearchParams(location.search).get("cat");
   if (urlCat) state.categoria = urlCat;
@@ -76,6 +77,7 @@
           </div>
           <div class="grid" id="grid"></div>
           <p class="empty-state" id="empty" hidden>No hay productos que coincidan con el filtro.</p>
+          <nav class="pager" id="pager" aria-label="Paginación"></nav>
         </section>
       </div>
     </div>`;
@@ -94,7 +96,7 @@
       const b = e.target.closest(".cat-tab");
       if (!b) return;
       state.categoria = b.dataset.cat;
-      render();
+      resetPagina();
     });
   }
 
@@ -128,7 +130,7 @@
       const head = e.target.closest(".sb-group-head");
       if (head) { head.parentElement.classList.toggle("collapsed"); return; }
       const item = e.target.closest("[data-cat]");
-      if (item) { state.categoria = item.dataset.cat; render(); }
+      if (item) { state.categoria = item.dataset.cat; resetPagina(); }
     });
   }
 
@@ -146,7 +148,7 @@
     panel.innerHTML = html;
     panel.addEventListener("click", (e) => {
       const item = e.target.closest("[data-marca]");
-      if (item) { state.marca = item.dataset.marca; render(); }
+      if (item) { state.marca = item.dataset.marca; resetPagina(); }
     });
   }
 
@@ -160,7 +162,7 @@
         $("#panelMarca").hidden = state.tab !== "marca";
       })
     );
-    $("#sortSel").addEventListener("change", (e) => { state.sort = e.target.value; render(); });
+    $("#sortSel").addEventListener("change", (e) => { state.sort = e.target.value; resetPagina(); });
   }
 
   /* ---------- Filtrado + orden ---------- */
@@ -205,7 +207,7 @@
         if (k === "all") { state.categoria = "all"; state.marca = "all"; state.q = ""; document.querySelector("#searchInput").value = ""; document.querySelector("#searchClear").classList.remove("show"); }
         else if (k === "q") { state.q = ""; document.querySelector("#searchInput").value = ""; document.querySelector("#searchClear").classList.remove("show"); }
         else state[k] = "all";
-        render();
+        resetPagina();
       })
     );
   }
@@ -225,7 +227,13 @@
     const empty = $("#empty");
     empty.hidden = list.length > 0;
 
-    grid.innerHTML = list
+    // Paginación
+    const totalPages = Math.max(1, Math.ceil(list.length / POR_PAGINA));
+    if (state.page > totalPages) state.page = totalPages;
+    const inicio = (state.page - 1) * POR_PAGINA;
+    const pageItems = list.slice(inicio, inicio + POR_PAGINA);
+
+    grid.innerHTML = pageItems
       .map((p, i) =>
         LeanWear.cardHTML(p).replace(
           '<a class="card"',
@@ -233,10 +241,57 @@
         )
       )
       .join("");
+
+    renderPager(totalPages);
   }
 
+  /* ---------- Paginación (1 2 3 …) ---------- */
+  function renderPager(totalPages) {
+    const pager = $("#pager");
+    if (totalPages <= 1) { pager.innerHTML = ""; return; }
+
+    // Ventana de números con "…" si hay muchas páginas.
+    const cur = state.page, nums = [];
+    const push = (n) => nums.push(n);
+    if (totalPages <= 7) { for (let i = 1; i <= totalPages; i++) push(i); }
+    else {
+      push(1);
+      if (cur > 3) push("…");
+      for (let i = Math.max(2, cur - 1); i <= Math.min(totalPages - 1, cur + 1); i++) push(i);
+      if (cur < totalPages - 2) push("…");
+      push(totalPages);
+    }
+
+    const btn = (label, page, opts = {}) =>
+      `<button class="pg-btn ${opts.active ? "active" : ""} ${opts.dis ? "dis" : ""}"
+        ${opts.dis ? "disabled" : ""} data-page="${page}">${label}</button>`;
+
+    pager.innerHTML =
+      btn("‹", cur - 1, { dis: cur === 1 }) +
+      nums.map((n) => n === "…"
+        ? `<span class="pg-dots">…</span>`
+        : btn(n, n, { active: n === cur })).join("") +
+      btn("›", cur + 1, { dis: cur === totalPages });
+
+    pager.querySelectorAll(".pg-btn").forEach((b) =>
+      b.addEventListener("click", () => {
+        if (b.disabled) return;
+        irAPagina(Number(b.dataset.page));
+      }));
+  }
+
+  function irAPagina(n) {
+    state.page = n;
+    render();
+    // Subir al inicio del catálogo al cambiar de página.
+    root.querySelector(".catalog-shell").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  // Cambió un filtro/búsqueda → volver a la página 1.
+  function resetPagina() { state.page = 1; render(); }
+
   /* ---------- Búsqueda desde el header ---------- */
-  document.addEventListener("lean:search", (e) => { state.q = e.detail || ""; render(); });
+  document.addEventListener("lean:search", (e) => { state.q = e.detail || ""; resetPagina(); });
 
   /* ---------- Init ---------- */
   buildCatBar();
