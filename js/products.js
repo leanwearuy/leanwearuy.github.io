@@ -30,6 +30,10 @@ const PRODUCTOS = [
     talles: ["36","37","38","39","40","41","42","43","44","45"],
     imagenes: [
       "assets/jordan/jordan-4-lightning-1.jpeg",
+      "assets/jordan/jordan-4-lightning-2.jpeg",
+      "assets/jordan/jordan-4-lightning-3.jpeg",
+      "assets/jordan/jordan-4-lightning-4.jpeg",
+      "assets/jordan/jordan-4-lightning-5.jpeg",
     ],
   },
   {
