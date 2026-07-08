@@ -31,6 +31,12 @@ const PRODUCTOS = [
     colores: ["Negro","Blanco"],
     imagenes: [
       "assets/jordan/mochila-jordan-monogram-1.jpg",
+      "assets/jordan/mochila-jordan-monogram-2.jpg",
+      "assets/jordan/mochila-jordan-monogram-3.jpg",
+      "assets/jordan/mochila-jordan-monogram-4.jpg",
+      "assets/jordan/mochila-jordan-monogram-5.jpg",
+      "assets/jordan/mochila-jordan-monogram-6.jpg",
+      "assets/jordan/mochila-jordan-monogram-7.jpg",
     ],
   },
   {
