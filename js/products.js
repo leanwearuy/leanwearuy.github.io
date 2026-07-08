@@ -24,6 +24,16 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Mochila Jordan Monogram",
+    marca: "Jordan", categoria: "mochilas", seccion: "encargues",
+    precio: 3490,
+    talles: ["Único"],
+    colores: ["Negro","Blanco"],
+    imagenes: [
+      "assets/jordan/mochila-jordan-monogram-1.jpg",
+    ],
+  },
+  {
     nombre: "Jordan Bag Airbone Festival",
     marca: "Jordan", categoria: "mochilas", seccion: "encargues",
     precio: 2890,
