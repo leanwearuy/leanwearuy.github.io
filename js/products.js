@@ -24,7 +24,7 @@
 
 const PRODUCTOS = [
   {
-    nombre: "Jordan 4 lightning",
+    nombre: "Jordan 4 Lightning",
     marca: "Jordan", categoria: "zapatos", seccion: "encargues",
     precio: 6890,
     talles: ["36","37","38","39","40","41","42","43","44","45"],
