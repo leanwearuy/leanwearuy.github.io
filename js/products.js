@@ -24,6 +24,16 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Short Jordan Flight",
+    marca: "Jordan", categoria: "shorts", seccion: "encargues",
+    precio: 2390,
+    talles: ["S","M","L","XL","XXL"],
+    colores: ["Negro"],
+    imagenes: [
+      "assets/jordan/short-jordan-flight-1.jpg",
+    ],
+  },
+  {
     nombre: "Conjunto Jordan Sport",
     marca: "Jordan", categoria: "conjuntos", seccion: "encargues",
     precio: 6690,
