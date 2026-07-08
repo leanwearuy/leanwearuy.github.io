@@ -27,7 +27,7 @@ const PRODUCTOS = [
     nombre: "Jordan Bag Airbone Festival",
     marca: "Jordan", categoria: "mochilas", seccion: "encargues",
     precio: 2890,
-    talles: [],
+    talles: ["Único"],
     colores: ["Negro","Blanco","Verde"],
     imagenes: [
       "assets/jordan/jordan-bag-airbone-festival-1.jpg",
