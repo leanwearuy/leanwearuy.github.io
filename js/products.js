@@ -24,6 +24,15 @@
 
 const PRODUCTOS = [
   {
+    nombre: "Jordan 4 Blue Thunder",
+    marca: "Jordan", categoria: "zapatos", seccion: "encargues",
+    precio: 5990,
+    talles: ["36","37","38","39","40","41","42","43","44","45"],
+    imagenes: [
+      "assets/jordan/jordan-4-blue-thunder-1.jpeg",
+    ],
+  },
+  {
     nombre: "Jordan 4 Lightning",
     marca: "Jordan", categoria: "zapatos", seccion: "encargues",
     precio: 6890,
